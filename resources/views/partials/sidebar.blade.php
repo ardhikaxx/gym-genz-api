@@ -1,0 +1,56 @@
+<!-- Sidebar -->
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+    <div class="position-sticky pt-3">
+        <div class="sidebar-brand text-center py-4">
+            <div class="logo-container mx-auto mb-3">
+                <i class="fas fa-dumbbell"></i>
+            </div>
+            <h2 class="brand-name">Gym GenZ</h2>
+            <p class="brand-tagline">Fitness Management</p>
+        </div>
+
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ route('admin.dashboard') }}">
+                    <i class="fas fa-home me-2"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-users me-2"></i>
+                    Manajemen Pengguna
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Jadwal Workout
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Manajemen Admin
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-dumbbell me-2"></i>
+                    Manajemen Workout
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-user me-2"></i>
+                    Profile
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
