@@ -38,11 +38,8 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h6 class="text-uppercase text-muted mb-2">Total Members</h6>
+                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
                             <h2 class="stat-number mb-0">1,248</h2>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up me-1"></i>12.5% from last month
-                            </div>
                         </div>
                         <div class="icon-container bg-purple-light">
                             <i class="fas fa-users text-purple"></i>
@@ -53,16 +50,15 @@
         </div>
         
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card" style="border-left-color: var(--success-color);">
+            <div class="card stat-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h6 class="text-uppercase text-muted mb-2">Active Now</h6>
-                            <h2 class="stat-number mb-0">84</h2>
-                            <div class="text-muted small">In gym right now</div>
+                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
+                            <h2 class="stat-number mb-0">1,248</h2>
                         </div>
-                        <div class="icon-container bg-success-light">
-                            <i class="fas fa-user-check text-success"></i>
+                        <div class="icon-container bg-purple-light">
+                            <i class="fas fa-users text-purple"></i>
                         </div>
                     </div>
                 </div>
@@ -70,18 +66,15 @@
         </div>
         
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card" style="border-left-color: var(--warning-color);">
+            <div class="card stat-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h6 class="text-uppercase text-muted mb-2">Monthly Revenue</h6>
-                            <h2 class="stat-number mb-0">$24,580</h2>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up me-1"></i>8.2% from last month
-                            </div>
+                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
+                            <h2 class="stat-number mb-0">1,248</h2>
                         </div>
-                        <div class="icon-container bg-warning-light">
-                            <i class="fas fa-dollar-sign text-warning"></i>
+                        <div class="icon-container bg-purple-light">
+                            <i class="fas fa-users text-purple"></i>
                         </div>
                     </div>
                 </div>
@@ -89,18 +82,15 @@
         </div>
         
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card" style="border-left-color: var(--info-color);">
+            <div class="card stat-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h6 class="text-uppercase text-muted mb-2">New This Month</h6>
-                            <h2 class="stat-number mb-0">156</h2>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up me-1"></i>23 new this week
-                            </div>
+                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
+                            <h2 class="stat-number mb-0">1,248</h2>
                         </div>
-                        <div class="icon-container bg-info-light">
-                            <i class="fas fa-user-plus text-info"></i>
+                        <div class="icon-container bg-purple-light">
+                            <i class="fas fa-users text-purple"></i>
                         </div>
                     </div>
                 </div>
