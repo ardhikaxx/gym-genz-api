@@ -802,9 +802,12 @@
                         document.getElementById('detailBmiCategory').textContent = '-';
                     }
 
-                    document.getElementById('detailGolonganDarah').textContent = pengguna.golongan_darah ?
-                        `<span class="blood-badge">${pengguna.golongan_darah}</span>` :
-                        '-';
+                    if (pengguna.golongan_darah) {
+                        document.getElementById('detailGolonganDarah').innerHTML =
+                            `<span class="blood-badge">${pengguna.golongan_darah}</span>`;
+                    } else {
+                        document.getElementById('detailGolonganDarah').textContent = '-';
+                    }
 
                     document.getElementById('detailAlergi').innerHTML = pengguna.alergi ?
                         pengguna.alergi.split(',').map(allergy =>
