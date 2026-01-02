@@ -6,7 +6,7 @@
         </button>
         
         <!-- Brand -->
-        <a class="navbar-brand d-lg-none" href="#">
+        <a class="navbar-brand d-lg-none" href="{{ route('admin.dashboard') }}">
             <i class="fas fa-dumbbell me-2"></i>Gym GenZ
         </a>
         
@@ -15,17 +15,29 @@
             <button class="btn dropdown-toggle d-flex align-items-center" type="button" 
                     id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="user-avatar me-2">
-                    <i class="fas fa-user-circle"></i>
+                    @if(Auth::guard('admin')->user()->foto_profile)
+                        <img src="{{ asset('admins/' . Auth::guard('admin')->user()->foto_profile) }}" 
+                             alt="Profile" class="rounded-circle" style="width: 32px; height: 32px;">
+                    @else
+                        <i class="fas fa-user-circle"></i>
+                    @endif
                 </div>
                 <div class="user-info text-start text-white">
-                    <div class="user-name">Admin User</div>
+                    <div class="user-name">{{ Auth::guard('admin')->user()->nama_lengkap }}</div>
                     <div class="user-role">Administrator</div>
                 </div>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user me-2"></i>Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

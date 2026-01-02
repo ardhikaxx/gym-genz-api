@@ -168,11 +168,6 @@ header.navbar {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
-}
-
 .card-title {
     font-weight: 600;
     color: var(--text-dark);
@@ -187,7 +182,7 @@ header.navbar {
 .form-control {
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    padding: 0.75rem;
     transition: all 0.3s ease;
 }
 

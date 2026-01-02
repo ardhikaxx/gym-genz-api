@@ -11,7 +11,8 @@
 
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('admin.dashboard') }}">
+                <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                    href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-home me-2"></i>
                     Dashboard
                 </a>
@@ -33,20 +34,22 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-user-tie me-2"></i>
-                    Manajemen Admin
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">
                     <i class="fas fa-dumbbell me-2"></i>
                     Manajemen Workout
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ request()->routeIs('manajemen-admin.index') || request()->routeIs('manajemen-admin.index.*') ? 'active' : '' }}"
+                    href="{{ route('manajemen-admin.index') }}">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Manajemen Admin
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.profile') ? 'active' : '' }}"
+                    href="{{ route('admin.profile') }}">
                     <i class="fas fa-user me-2"></i>
                     Profile
                 </a>
