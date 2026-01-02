@@ -19,7 +19,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ request()->routeIs('manajemen-pengguna.index') || request()->routeIs('manajemen-pengguna.*') ? 'active' : '' }}"
+                    href="{{ route('manajemen-pengguna.index') }}">
                     <i class="fas fa-users me-2"></i>
                     Manajemen Pengguna
                 </a>
@@ -40,7 +41,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('manajemen-admin.index') || request()->routeIs('manajemen-admin.index.*') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('manajemen-admin.index') || request()->routeIs('manajemen-admin.*') ? 'active' : '' }}"
                     href="{{ route('manajemen-admin.index') }}">
                     <i class="fas fa-user-tie me-2"></i>
                     Manajemen Admin

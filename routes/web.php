@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ManajemenPenggunaController;
 use App\Http\Controllers\ManajemenAdminController;
 
 // Auth Routes
@@ -15,6 +16,11 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admins.dashboard.index');
     })->name('admin.dashboard');
+
+    // Manajemen Pengguna
+Route::get('/manajemen-pengguna', [ManajemenPenggunaController::class, 'index'])->name('manajemen-pengguna.index');
+Route::get('/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'show'])->name('manajemen-pengguna.show');
+Route::delete('/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'destroy'])->name('manajemen-pengguna.destroy');
 
     // Manajemen Admin
     Route::get('/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');
