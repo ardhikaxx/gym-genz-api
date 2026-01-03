@@ -332,7 +332,7 @@
         }
 
         /* Hover Effects */
-        .btn-outline-dark:hover {
+        .btn-secondary:hover {
             background-color: #f1f5f9;
             border-color: #cbd5e1;
             color: #334155;
@@ -464,11 +464,11 @@
                                     </td>
                                     <td data-label="Aksi">
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-purple"
+                                            <button class="btn btn-sm btn-purple"
                                                 onclick="showDetail({{ $pengguna->id }})">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger"
+                                            <button class="btn btn-sm btn-danger"
                                                 onclick="showDeleteConfirm({{ $pengguna->id }})">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -654,7 +654,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
@@ -677,7 +677,7 @@
                     <input type="hidden" id="deletePenggunaId">
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">
                         <i class="fas fa-trash me-2"></i>Hapus
                     </button>
@@ -740,7 +740,7 @@
         // Show pengguna detail
         async function showDetail(id) {
             try {
-                const response = await fetch(`/manajemen-pengguna/${id}`, {
+                const response = await fetch(`/admin/manajemen-pengguna/${id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -841,7 +841,7 @@
             const id = document.getElementById('deletePenggunaId').value;
 
             try {
-                const response = await fetch(`/manajemen-pengguna/${id}`, {
+                const response = await fetch(`/admin/manajemen-pengguna/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',

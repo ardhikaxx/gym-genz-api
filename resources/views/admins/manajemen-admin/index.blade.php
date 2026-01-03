@@ -197,11 +197,11 @@
                                     </td>
                                     <td data-label="Aksi">
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-purple" onclick="editAdmin({{ $admin->id }})">
+                                            <button class="btn btn-sm btn-purple" onclick="editAdmin({{ $admin->id }})">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             @if($admins->count() > 1)
-                                            <button class="btn btn-sm btn-outline-danger" onclick="showDeleteConfirm({{ $admin->id }})">
+                                            <button class="btn btn-sm btn-danger" onclick="showDeleteConfirm({{ $admin->id }})">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                             @endif
@@ -321,7 +321,7 @@
                                         <div class="profile-preview" id="profilePreview">
                                             <i class="fas fa-user-circle fa-4x text-muted"></i>
                                         </div>
-                                        <label for="adminPhoto" class="upload-label btn btn-sm btn-outline-purple mt-2">
+                                        <label for="adminPhoto" class="upload-label btn btn-sm btn-purple mt-2">
                                             <i class="fas fa-upload me-1"></i>Upload Foto
                                         </label>
                                         <input type="file" id="adminPhoto" name="foto_profile" accept="image/*" hidden>
@@ -415,7 +415,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-purple" onclick="addNewAdmin()" id="addAdminBtn">
                         <i class="fas fa-user-plus me-2"></i>Tambah Admin
                     </button>
@@ -447,10 +447,10 @@
                                             <i class="fas fa-user-circle fa-4x text-muted"></i>
                                         </div>
                                         <div class="d-flex gap-2 mt-2">
-                                            <label for="editAdminPhoto" class="upload-label btn btn-sm btn-outline-purple">
+                                            <label for="editAdminPhoto" class="upload-label btn btn-sm btn-purple">
                                                 <i class="fas fa-upload me-1"></i>Ganti Foto
                                             </label>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAdminPhoto()">
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="removeAdminPhoto()">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -542,7 +542,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-purple" onclick="updateAdmin()" id="updateAdminBtn">
                         <i class="fas fa-save me-2"></i>Simpan Perubahan
                     </button>
@@ -568,7 +568,7 @@
                     <input type="hidden" id="deleteAdminId">
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">
                         <i class="fas fa-trash me-2"></i>Hapus
                     </button>
@@ -725,7 +725,7 @@
         // Edit admin
         async function editAdmin(id) {
             try {
-                const response = await fetch(`/manajemen-admin/${id}`, {
+                const response = await fetch(`/admin/manajemen-admin/${id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -792,7 +792,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch(`/manajemen-admin/${id}`, {
+                const response = await fetch(`/admin/manajemen-admin/${id}`, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -847,7 +847,7 @@
             }
 
             try {
-                const response = await fetch(`/manajemen-admin/${id}/remove-photo`, {
+                const response = await fetch(`/admin/manajemen-admin/${id}/remove-photo`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -884,7 +884,7 @@
             const id = document.getElementById('deleteAdminId').value;
             
             try {
-                const response = await fetch(`/manajemen-admin/${id}`, {
+                const response = await fetch(`/admin/manajemen-admin/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',

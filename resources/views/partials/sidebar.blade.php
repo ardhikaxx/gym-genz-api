@@ -27,6 +27,14 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('manajemen-food.index') || request()->routeIs('manajemen-food.*') ? 'active' : '' }}"
+                    href="{{ route('manajemen-food.index') }}">
+                    <i class="fas fa-utensils me-2"></i>
+                    Food Plan
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-calendar-alt me-2"></i>
                     Jadwal Workout

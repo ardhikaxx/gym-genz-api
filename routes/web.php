@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ManajemenPenggunaController;
+use App\Http\Controllers\ManajemenFoodController;
 use App\Http\Controllers\ManajemenAdminController;
 
 // Auth Routes
@@ -18,17 +19,25 @@ Route::middleware(['auth:admin'])->group(function () {
     })->name('admin.dashboard');
 
     // Manajemen Pengguna
-Route::get('/manajemen-pengguna', [ManajemenPenggunaController::class, 'index'])->name('manajemen-pengguna.index');
-Route::get('/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'show'])->name('manajemen-pengguna.show');
-Route::delete('/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'destroy'])->name('manajemen-pengguna.destroy');
+    Route::get('/admin/manajemen-pengguna', [ManajemenPenggunaController::class, 'index'])->name('manajemen-pengguna.index');
+    Route::get('/admin/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'show'])->name('manajemen-pengguna.show');
+    Route::delete('/admin/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'destroy'])->name('manajemen-pengguna.destroy');
+
+    // Manajemen Food Plan
+    Route::get('/manajemen-food', [ManajemenFoodController::class, 'index'])->name('manajemen-food.index');
+    Route::post('/manajemen-food', [ManajemenFoodController::class, 'store'])->name('manajemen-food.store');
+    Route::get('/manajemen-food/{id}', [ManajemenFoodController::class, 'show'])->name('manajemen-food.show');
+    Route::put('/manajemen-food/{id}', [ManajemenFoodController::class, 'update'])->name('manajemen-food.update');
+    Route::delete('/manajemen-food/{id}', [ManajemenFoodController::class, 'destroy'])->name('manajemen-food.destroy');
+    Route::get('/manajemen-food/category/{category}', [ManajemenFoodController::class, 'filterByCategory'])->name('manajemen-food.filter');
 
     // Manajemen Admin
-    Route::get('/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');
-    Route::post('/manajemen-admin', [ManajemenAdminController::class, 'store'])->name('manajemen-admin.store');
-    Route::get('/manajemen-admin/{id}', [ManajemenAdminController::class, 'show'])->name('manajemen-admin.show');
+    Route::get('/admin/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');
+    Route::post('/admin/manajemen-admin', [ManajemenAdminController::class, 'store'])->name('manajemen-admin.store');
+    Route::get('/admin/manajemen-admin/{id}', [ManajemenAdminController::class, 'show'])->name('manajemen-admin.show');
     Route::put('/manajemen-admin/{id}', [ManajemenAdminController::class, 'update'])->name('manajemen-admin.update');
-    Route::delete('/manajemen-admin/{id}', [ManajemenAdminController::class, 'destroy'])->name('manajemen-admin.destroy');
-    Route::delete('/manajemen-admin/{id}/remove-photo', [ManajemenAdminController::class, 'removePhoto'])->name('manajemen-admin.remove-photo');
+    Route::delete('/admin/manajemen-admin/{id}', [ManajemenAdminController::class, 'destroy'])->name('manajemen-admin.destroy');
+    Route::delete('/admin/manajemen-admin/{id}/remove-photo', [ManajemenAdminController::class, 'removePhoto'])->name('manajemen-admin.remove-photo');
 
     // Profile Routes
     Route::get('/admin/profile', [ProfileController::class, 'index'])->name('admin.profile');

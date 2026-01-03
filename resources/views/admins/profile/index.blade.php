@@ -62,12 +62,12 @@
             cursor: pointer;
         }
 
-        .btn-outline-purple {
+        .btn-purple {
             color: #AF69EE;
             border-color: #AF69EE;
         }
 
-        .btn-outline-purple:hover {
+        .btn-purple:hover {
             background: #AF69EE;
             color: white;
         }
@@ -161,7 +161,7 @@
                 <p class="text-muted">Manage your personal information and account settings</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                 </a>
                 <button class="btn btn-purple" onclick="saveProfile()">
@@ -189,7 +189,7 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                <button class="btn btn-sm btn-outline-purple" onclick="removePhoto()">
+                                <button class="btn btn-sm btn-purple" onclick="removePhoto()">
                                     <i class="fas fa-trash me-1"></i>Remove Photo
                                 </button>
                             </div>
