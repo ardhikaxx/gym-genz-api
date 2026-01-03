@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ManajemenPenggunaController;
 use App\Http\Controllers\ManajemenFoodController;
 use App\Http\Controllers\ManajemenAdminController;
+use App\Http\Controllers\DashboardController;
 
 // Auth Routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -14,10 +15,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Routes
 Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admins.dashboard.index');
-    })->name('admin.dashboard');
-
+    // Dashboard
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard/stats', [DashboardController::class, 'getStats'])->name('admin.dashboard.stats');
+    
     // Manajemen Pengguna
     Route::get('/admin/manajemen-pengguna', [ManajemenPenggunaController::class, 'index'])->name('manajemen-pengguna.index');
     Route::get('/admin/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'show'])->name('manajemen-pengguna.show');

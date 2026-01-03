@@ -3,288 +3,287 @@
 @section('title', 'Dashboard - Gym GenZ Admin')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
 @section('content')
-<div class="container-fluid">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-2 text-dark">Dashboard Overview</h1>
-            <p class="text-muted">Welcome back, Admin! Here's what's happening with your gym today.</p>
-        </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-purple">
-                <i class="fas fa-plus me-2"></i>Add Member
-            </button>
-            <div class="dropdown">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-calendar-alt me-2"></i>This Month
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">This Week</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                </ul>
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h2 mb-2 text-dark">Dashboard Overview</h1>
+                <h6 class="text-muted">Halo {{ Auth::guard('admin')->user()->nama_lengkap }}, selamat datang kembali. Yuk,
+                    kelola data dan aktivitas gym hari ini.</h6>
             </div>
-        </div>
-    </div>
+            <div class="text-end">
+                <div class="text-muted small">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Data terakhir diperbarui:
+                    @php
+                        use Carbon\Carbon;
 
-    <!-- Stats Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
-                            <h2 class="stat-number mb-0">1,248</h2>
-                        </div>
-                        <div class="icon-container bg-purple-light">
-                            <i class="fas fa-users text-purple"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
-                            <h2 class="stat-number mb-0">1,248</h2>
-                        </div>
-                        <div class="icon-container bg-purple-light">
-                            <i class="fas fa-users text-purple"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
-                            <h2 class="stat-number mb-0">1,248</h2>
-                        </div>
-                        <div class="icon-container bg-purple-light">
-                            <i class="fas fa-users text-purple"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="text-uppercase text-muted mb-2">Total Pengguna</h6>
-                            <h2 class="stat-number mb-0">1,248</h2>
-                        </div>
-                        <div class="icon-container bg-purple-light">
-                            <i class="fas fa-users text-purple"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        $latestUpdate = max(
+                            $latestPengguna->created_at ?? null,
+                            $latestAdmin->created_at ?? null,
+                            $latestFood->created_at ?? null,
+                        );
+                    @endphp
 
-    <!-- Charts Row -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Attendance Overview</h5>
-                    <select class="form-select form-select-sm w-auto">
-                        <option>Last 7 Days</option>
-                        <option selected>Last 30 Days</option>
-                        <option>Last 90 Days</option>
-                    </select>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container">
-                        <canvas id="attendanceChart"></canvas>
-                    </div>
+                    @if ($latestUpdate)
+                        {{ Carbon::parse($latestUpdate)->setTimezone('Asia/Jakarta')->locale('id_ID')->translatedFormat('d F Y H:i') }}
+                        WIB
+                    @else
+                        Tidak ada data
+                    @endif
                 </div>
             </div>
         </div>
-        
-        <div class="col-lg-4">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="mb-0">Membership Types</h5>
-                </div>
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <div class="chart-container" style="height: 250px;">
-                        <canvas id="membershipChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Recent Activity & Top Trainers -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Members</h5>
-                    <a href="#" class="btn btn-sm btn-outline-dark">View All</a>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Member</th>
-                                    <th>Join Date</th>
-                                    <th>Plan</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
-                                                <div class="avatar-circle bg-purple text-white">
-                                                    <span>JD</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="fw-medium">John Doe</div>
-                                                <div class="text-muted small">Member ID: GZ001</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024-03-15</td>
-                                    <td><span class="badge bg-purple">Premium</span></td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
-                                                <div class="avatar-circle bg-info text-white">
-                                                    <span>JS</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="fw-medium">Jane Smith</div>
-                                                <div class="text-muted small">Member ID: GZ002</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024-03-14</td>
-                                    <td><span class="badge bg-warning">Basic</span></td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
-                                                <div class="avatar-circle bg-success text-white">
-                                                    <span>RB</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="fw-medium">Robert Brown</div>
-                                                <div class="text-muted small">Member ID: GZ003</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024-03-13</td>
-                                    <td><span class="badge bg-purple">Premium</span></td>
-                                    <td><span class="badge bg-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
-                                                <div class="avatar-circle bg-danger text-white">
-                                                    <span>LW</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="fw-medium">Lisa White</div>
-                                                <div class="text-muted small">Member ID: GZ004</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024-03-12</td>
-                                    <td><span class="badge bg-info">Student</span></td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Equipment Status</h5>
-                    <a href="#" class="btn btn-sm btn-outline-dark">Manage</a>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <div class="equipment-card text-center p-3 rounded">
-                                <div class="equipment-icon mb-3">
-                                    <i class="fas fa-dumbbell fa-2x text-purple"></i>
-                                </div>
-                                <h6>Treadmills</h6>
-                                <div class="progress mb-2" style="height: 8px;">
-                                    <div class="progress-bar bg-success" style="width: 85%"></div>
-                                </div>
-                                <span class="badge bg-success">8/10 Available</span>
+        <!-- Stat Cards -->
+        <div class="row g-4 mb-4">
+            <!-- Stat Card: Total Admin -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card stat-card stat-card-large">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="text-uppercase text-muted mb-2">Total Admin</h5>
+                                <h2 class="stat-number mb-0">{{ number_format($totalAdmin) }}</h2>
+                            </div>
+                            <div class="icon-container bg-purple-light">
+                                <i class="fas fa-user-shield text-purple"></i>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="equipment-card text-center p-3 rounded">
-                                <div class="equipment-icon mb-3">
-                                    <i class="fas fa-bicycle fa-2x text-info"></i>
-                                </div>
-                                <h6>Stationary Bikes</h6>
-                                <div class="progress mb-2" style="height: 8px;">
-                                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                                </div>
-                                <span class="badge bg-success">9/10 Available</span>
+                        <div class="card-footer-stat mt-2 pt-3 border-top">
+                            <div class="text-purple small">
+                                <i class="fas fa-calendar-plus me-1"></i>
+                                @if ($latestAdmin)
+                                    Terakhir ditambahkan: {{ $latestAdmin->created_at->format('d M') }}
+                                @endif
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="equipment-card text-center p-3 rounded">
-                                <div class="equipment-icon mb-3">
-                                    <i class="fas fa-weight-hanging fa-2x text-warning"></i>
-                                </div>
-                                <h6>Weight Sets</h6>
-                                <div class="progress mb-2" style="height: 8px;">
-                                    <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                </div>
-                                <span class="badge bg-warning">7/10 Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stat Card: Total Pengguna -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card stat-card stat-card-large">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="text-uppercase text-muted mb-2">Total Pengguna</h5>
+                                <h2 class="stat-number mb-0">{{ number_format($totalPengguna) }}</h2>
+                            </div>
+                            <div class="icon-container bg-purple-light">
+                                <i class="fas fa-users text-purple"></i>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="equipment-card text-center p-3 rounded">
-                                <div class="equipment-icon mb-3">
-                                    <i class="fas fa-running fa-2x text-danger"></i>
+                        <div class="card-footer-stat mt-2 pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="small text-purple">
+                                    <i class="fas fa-venus-mars me-1"></i>
+                                    {{ ($genderStats['P'] ?? 0) + ($genderStats['L'] ?? 0) }} pengguna aktif
                                 </div>
-                                <h6>Ellipticals</h6>
-                                <div class="progress mb-2" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stat Card: Total Food Plan -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card stat-card stat-card-large">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="text-uppercase text-muted mb-2">Total Food Plan</h5>
+                                <h2 class="stat-number mb-0">{{ number_format($totalFood) }}</h2>
+                            </div>
+                            <div class="icon-container bg-purple-light">
+                                <i class="fas fa-utensils text-purple"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer-stat mt-2 pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="small text-purple">
+                                    <i class="fas fa-utensils me-1"></i>
+                                    {{ count($foodCategoryStats) }} kategori waktu makan
                                 </div>
-                                <span class="badge bg-danger">5/10 Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stat Card: BMI Stats -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card stat-card stat-card-large">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="text-uppercase text-muted mb-2">Status BMI</h5>
+                                @php
+                                    $totalWithBMI = array_sum($bmiStats);
+                                    $normalBMI = $bmiStats['normal'] ?? 0;
+                                    $percentage = $totalWithBMI > 0 ? round(($normalBMI / $totalWithBMI) * 100) : 0;
+                                @endphp
+                                <h2 class="stat-number mb-0">{{ $percentage }}%</h2>
+                            </div>
+                            <div class="icon-container bg-purple-light">
+                                <i class="fas fa-chart-line text-purple"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer-stat mt-2 pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-purple small">
+                                    <i class="fas fa-heartbeat me-1"></i>
+                                    {{ $normalBMI }} pengguna normal
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row g-4 mb-4">
+            <!-- Chart 1: New Registrations -->
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-tint me-2 text-purple"></i>
+                            Golongan Darah Pengguna
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (count($bloodTypeStats) > 0)
+                            <div style="height: 300px;">
+                                <canvas id="bloodTypeChart"></canvas>
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <i class="fas fa-tint fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">Belum ada data golongan darah</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart 2: Gender Distribution -->
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-venus-mars me-2 text-purple"></i>
+                            Distribusi Jenis Kelamin Pengguna
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 300px;">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-layer-group me-2 text-purple"></i>
+                            Kategori Makanan
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (count($foodCategoryStats) > 0)
+                            <div class="row g-3">
+                                @foreach ($foodCategoryStats as $category => $count)
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center p-3 border rounded">
+                                            <div class="bg-primary-light rounded p-2 me-3">
+                                                <i class="fas fa-utensils text-purple"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">{{ $category }}</h6>
+                                                <h4 class="mb-0">{{ $count }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">Belum ada data makanan</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-weight-scale me-2 text-purple"></i>
+                            Kategori BMI Pengguna
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center p-3 border rounded bg-success-light">
+                                    <div class="bg-success rounded py-2 px-2 me-3">
+                                        <i class="fas fa-heart text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Normal</h6>
+                                        <h4 class="mb-0">{{ $bmiStats['normal'] ?? 0 }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center p-3 border rounded bg-warning-light">
+                                    <div class="bg-warning rounded px-2 py-2 me-3">
+                                        <i class="fas fa-exclamation-circle text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Overweight</h6>
+                                        <h4 class="mb-0">{{ $bmiStats['overweight'] ?? 0 }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center p-3 border rounded bg-danger-light">
+                                    <div class="bg-danger rounded py-2 px-2 me-3">
+                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Obesitas</h6>
+                                        <h4 class="mb-0">{{ $bmiStats['obesity'] ?? 0 }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center p-3 border rounded bg-info-light">
+                                    <div class="bg-info rounded px-2 py-2 me-3">
+                                        <i class="fas fa-info-circle text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Underweight</h6>
+                                        <h4 class="mb-0">{{ $bmiStats['underweight'] ?? 0 }}</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -292,83 +291,146 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
 
-@push('scripts')
-<script>
-// Toggle Sidebar
-document.getElementById('sidebarToggle').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.toggle('active');
-});
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Primary color variables
+            const primaryColor = '#AF69EE';
+            const primaryDark = '#8a2be2';
+            const primaryLight = '#c59cf4';
 
-// Attendance Chart
-const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
-const attendanceChart = new Chart(attendanceCtx, {
-    type: 'line',
-    data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-            label: 'Check-ins',
-            data: [65, 78, 90, 85, 120, 95, 70],
-            borderColor: '#AF69EE',
-            backgroundColor: 'rgba(175, 105, 238, 0.1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    drawBorder: false
+            // Gender Chart
+            const genderCtx = document.getElementById('genderChart').getContext('2d');
+            const genderChart = new Chart(genderCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Laki-laki', 'Perempuan'],
+                    datasets: [{
+                        data: [
+                            {{ $genderStats['L'] ?? 0 }},
+                            {{ $genderStats['P'] ?? 0 }}
+                        ],
+                        backgroundColor: [
+                            '#8a2be2',
+                            '#c59cf4'
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
                 }
-            },
-            x: {
-                grid: {
-                    display: false
-                }
+            });
+
+            // Blood Type Chart
+            @if (count($bloodTypeStats) > 0)
+                const bloodTypeCtx = document.getElementById('bloodTypeChart').getContext('2d');
+                const bloodTypeChart = new Chart(bloodTypeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: @json(array_keys($bloodTypeStats)),
+                        datasets: [{
+                            label: 'Jumlah',
+                            data: @json(array_values($bloodTypeStats)),
+                            backgroundColor: primaryLight,
+                            borderColor: primaryColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)'
+                                }
+                            }
+                        }
+                    }
+                });
+            @endif
+
+            // Auto refresh stats every 60 seconds
+            function refreshStats() {
+                fetch('{{ route('admin.dashboard.stats') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update stat numbers if needed
+                            console.log('Stats refreshed:', data.data);
+                        }
+                    });
             }
+
+            // Start auto-refresh
+            setInterval(refreshStats, 60000);
+        });
+    </script>
+
+    <style>
+        .bg-primary-light {
+            background-color: rgba(175, 105, 238, 0.1) !important;
         }
-    }
-});
 
-// Membership Chart
-const membershipCtx = document.getElementById('membershipChart').getContext('2d');
-const membershipChart = new Chart(membershipCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Premium', 'Basic', 'Student', 'Corporate'],
-        datasets: [{
-            data: [40, 30, 20, 10],
-            backgroundColor: [
-                '#AF69EE',
-                '#3b82f6',
-                '#10b981',
-                '#f59e0b'
-            ],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        },
-        cutout: '70%'
-    }
-});
-</script>
-@endpush
+        .bg-success-light {
+            background-color: rgba(40, 167, 69, 0.1) !important;
+        }
+
+        .bg-warning-light {
+            background-color: rgba(255, 193, 7, 0.1) !important;
+        }
+
+        .bg-danger-light {
+            background-color: rgba(220, 53, 69, 0.1) !important;
+        }
+
+        .bg-info-light {
+            background-color: rgba(23, 162, 184, 0.1) !important;
+        }
+
+        .text-purple {
+            color: #AF69EE !important;
+        }
+
+        .border-primary-light {
+            border-color: rgba(175, 105, 238, 0.2) !important;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8a2be2, #AF69EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+@endsection

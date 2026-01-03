@@ -51,7 +51,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('manajemen-admin.index') || request()->routeIs('manajemen-admin.*') ? 'active' : '' }}"
                     href="{{ route('manajemen-admin.index') }}">
-                    <i class="fas fa-user-tie me-2"></i>
+                    <i class="fas fa-user-shield me-2"></i>
                     Manajemen Admin
                 </a>
             </li>
@@ -59,7 +59,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.profile') ? 'active' : '' }}"
                     href="{{ route('admin.profile') }}">
-                    <i class="fas fa-user me-2"></i>
+                    <i class="fas fa-user-gear me-2"></i>
                     Profile
                 </a>
             </li>
