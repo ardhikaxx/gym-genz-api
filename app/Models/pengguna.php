@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Log;
 
 class Pengguna extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'penggunas';
     
@@ -40,7 +39,6 @@ class Pengguna extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'token_pengguna',
     ];
 
     /**
@@ -56,21 +54,33 @@ class Pengguna extends Authenticatable
     ];
 
     /**
-     * Generate custom token for login
+     * Generate custom token for authentication
      */
-    public function generateCustomToken()
+    public function generateAuthToken()
     {
-        $token = bin2hex(random_bytes(32)) . time();
-        $this->token_pengguna = $token;
+        $token = 'token_auth_' . bin2hex(random_bytes(32)) . '_' . time();
+        $this->token_pengguna = hash('sha256', $token);
         $this->save();
         
         return $token;
     }
 
     /**
+     * Validate custom token
+     */
+    public static function validateAuthToken($token)
+    {
+        if (empty($token)) {
+            return null;
+        }
+
+        return self::where('token_pengguna', hash('sha256', $token))->first();
+    }
+
+    /**
      * Clear custom token on logout
      */
-    public function clearCustomToken()
+    public function clearAuthToken()
     {
         $this->token_pengguna = null;
         $this->save();
@@ -125,21 +135,4 @@ class Pengguna extends Authenticatable
      * Append calculated attributes to array
      */
     protected $appends = ['foto_profile_url', 'bmi', 'bmi_category'];
-
-    /**
-     * Sync user data with Firebase
-     */
-    public function syncWithFirebase()
-    {
-        try {
-            // In a real implementation, this would sync data with Firebase
-            // For now, just log that sync was attempted
-            Log::info('Syncing user with Firebase: ' . $this->email);
-            
-            return true;
-        } catch (\Exception $e) {
-            Log::error('Failed to sync with Firebase: ' . $e->getMessage());
-            return false;
-        }
-    }
 }

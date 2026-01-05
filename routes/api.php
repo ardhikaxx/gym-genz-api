@@ -14,19 +14,17 @@ use App\Http\Controllers\Api\FoodController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/login/custom-token', [AuthController::class, 'loginWithCustomToken']);
-Route::get('/firebase-check', [AuthController::class, 'checkFirebaseConnection']);
+Route::post('/validate-token', [AuthController::class, 'validateToken']);
 
 // Protected routes - require authentication
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth.token')->group(function () {
 
     // Foodplan routes
     Route::get('/foods', [FoodController::class, 'getFoods']);
 
-    // Auth routes
+    // Auth + Profile routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::put('/profile/update', [AuthController::class, 'updateProfile']);
-    Route::put('/profile/change-password', [AuthController::class, 'changePassword']);
-    Route::delete('/profile/delete', [AuthController::class, 'deleteAccount']);
+    Route::post('/profile/change-password', [AuthController::class, 'changePassword']);
 });

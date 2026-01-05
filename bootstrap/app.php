@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
+
+        $middleware->alias([
+            'auth.token' => \App\Http\Middleware\AuthenticateWithToken::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

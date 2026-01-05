@@ -59,18 +59,14 @@ class AuthController extends Controller
         ]);
 
         // Generate custom token
-        $customToken = $pengguna->generateCustomToken();
-        
-        // Generate Sanctum token
-        $sanctumToken = $pengguna->createToken('auth_token')->plainTextToken;
+        $authToken = $pengguna->generateAuthToken();
 
         return response()->json([
             'success' => true,
             'message' => 'Registrasi berhasil',
             'data' => [
                 'pengguna' => $pengguna,
-                'token' => $sanctumToken,
-                'custom_token' => $customToken,
+                'token_auth' => $authToken,
                 'bmi' => $pengguna->bmi,
                 'bmi_category' => $pengguna->bmi_category,
             ]
@@ -96,18 +92,14 @@ class AuthController extends Controller
         }
 
         // Generate custom token
-        $customToken = $pengguna->generateCustomToken();
-        
-        // Generate Sanctum token
-        $sanctumToken = $pengguna->createToken('auth_token')->plainTextToken;
+        $authToken = $pengguna->generateAuthToken();
 
         return response()->json([
             'success' => true,
             'message' => 'Login berhasil',
             'data' => [
                 'pengguna' => $pengguna,
-                'token' => $sanctumToken,
-                'custom_token' => $customToken,
+                'token_auth' => $authToken,
                 'bmi' => $pengguna->bmi,
                 'bmi_category' => $pengguna->bmi_category,
             ]
@@ -119,11 +111,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Clear custom token
-        $request->user()->clearCustomToken();
+        $pengguna = $this->getAuthenticatedPengguna($request);
         
-        // Revoke Sanctum token
-        $request->user()->currentAccessToken()->delete();
+        if (!$pengguna) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid'
+            ], 401);
+        }
+
+        $pengguna->clearAuthToken();
 
         return response()->json([
             'success' => true,
@@ -136,7 +133,14 @@ class AuthController extends Controller
      */
     public function profile(Request $request)
     {
-        $pengguna = $request->user();
+        $pengguna = $this->getAuthenticatedPengguna($request);
+        
+        if (!$pengguna) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid'
+            ], 401);
+        }
         
         return response()->json([
             'success' => true,
@@ -153,7 +157,14 @@ class AuthController extends Controller
      */
     public function updateProfile(Request $request)
     {
-        $pengguna = $request->user();
+        $pengguna = $this->getAuthenticatedPengguna($request);
+        
+        if (!$pengguna) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid'
+            ], 401);
+        }
 
         $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'sometimes|string|max:255',
@@ -217,6 +228,15 @@ class AuthController extends Controller
      */
     public function changePassword(Request $request)
     {
+        $pengguna = $this->getAuthenticatedPengguna($request);
+        
+        if (!$pengguna) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid'
+            ], 401);
+        }
+
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
             'new_password' => 'required|string|min:8|confirmed',
@@ -228,8 +248,6 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-
-        $pengguna = $request->user();
 
         // Check current password
         if (!Hash::check($request->current_password, $pengguna->password)) {
@@ -250,33 +268,24 @@ class AuthController extends Controller
     }
 
     /**
-     * Login with custom token
+     * Validate token
      */
-    public function loginWithCustomToken(Request $request)
+    public function validateToken(Request $request)
     {
-        $request->validate([
-            'custom_token' => 'required|string',
-        ]);
-
-        $pengguna = Pengguna::where('token_pengguna', $request->custom_token)->first();
-
+        $pengguna = $this->getAuthenticatedPengguna($request);
+        
         if (!$pengguna) {
             return response()->json([
                 'success' => false,
-                'message' => 'Token tidak valid atau telah kadaluarsa'
+                'message' => 'Token tidak valid'
             ], 401);
         }
 
-        // Generate new Sanctum token
-        $sanctumToken = $pengguna->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'success' => true,
-            'message' => 'Login dengan token berhasil',
+            'message' => 'Token valid',
             'data' => [
                 'pengguna' => $pengguna,
-                'token' => $sanctumToken,
-                'custom_token' => $pengguna->token_pengguna,
                 'bmi' => $pengguna->bmi,
                 'bmi_category' => $pengguna->bmi_category,
             ]
@@ -284,26 +293,19 @@ class AuthController extends Controller
     }
 
     /**
-     * Delete account
+     * Helper method to get authenticated pengguna from token
      */
-    public function deleteAccount(Request $request)
+    private function getAuthenticatedPengguna(Request $request)
     {
-        $pengguna = $request->user();
+        $token = $request->header('Authorization');
         
-        // Delete profile photo if exists
-        if ($pengguna->foto_profile && file_exists(public_path('profile/' . $pengguna->foto_profile))) {
-            unlink(public_path('profile/' . $pengguna->foto_profile));
+        if (!$token) {
+            return null;
         }
-        
-        // Revoke all tokens
-        $pengguna->tokens()->delete();
-        
-        // Delete pengguna
-        $pengguna->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Akun berhasil dihapus'
-        ]);
+        // Remove "Bearer " prefix if present
+        $token = str_replace('Bearer ', '', $token);
+        
+        return Pengguna::validateAuthToken($token);
     }
 }
