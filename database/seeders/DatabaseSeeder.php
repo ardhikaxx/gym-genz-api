@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             PenggunaSeeder::class,
             AdminSeeder::class,
             FoodSeeder::class,
+            WorkoutSeeder::class,
         ]);
     }
 }
