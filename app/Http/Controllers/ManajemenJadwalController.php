@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\JadwalWorkout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
 
 class ManajemenJadwalController extends Controller
 {
@@ -42,15 +41,13 @@ class ManajemenJadwalController extends Controller
         }
 
         try {
-            $data = [
+            $jadwal = JadwalWorkout::create([
                 'nama_jadwal' => $request->nama_jadwal,
                 'kategori_jadwal' => $request->kategori_jadwal,
                 'tanggal' => $request->tanggal,
                 'jam' => $request->jam,
                 'durasi_workout' => $request->durasi_workout,
-            ];
-
-            $jadwal = JadwalWorkout::create($data);
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -72,6 +69,7 @@ class ManajemenJadwalController extends Controller
     public function show($id)
     {
         $jadwal = JadwalWorkout::findOrFail($id);
+        
         return response()->json([
             'success' => true,
             'data' => $jadwal
@@ -101,15 +99,13 @@ class ManajemenJadwalController extends Controller
         }
 
         try {
-            $data = [
+            $jadwal->update([
                 'nama_jadwal' => $request->nama_jadwal,
                 'kategori_jadwal' => $request->kategori_jadwal,
                 'tanggal' => $request->tanggal,
                 'jam' => $request->jam,
                 'durasi_workout' => $request->durasi_workout,
-            ];
-
-            $jadwal->update($data);
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -145,85 +141,5 @@ class ManajemenJadwalController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Get upcoming schedules
-     */
-    public function getUpcoming()
-    {
-        $today = Carbon::now()->format('Y-m-d');
-        
-        $upcoming = JadwalWorkout::where('tanggal', '>=', $today)
-            ->orderBy('tanggal', 'asc')
-            ->orderBy('jam', 'asc')
-            ->limit(5)
-            ->get();
-        
-        return response()->json([
-            'success' => true,
-            'data' => $upcoming
-        ]);
-    }
-
-    /**
-     * Get unique categories
-     */
-    public function getCategories()
-    {
-        $categories = JadwalWorkout::select('kategori_jadwal')
-            ->distinct()
-            ->pluck('kategori_jadwal')
-            ->toArray();
-        
-        return response()->json([
-            'success' => true,
-            'data' => $categories
-        ]);
-    }
-
-    /**
-     * Get schedule status based on date and time
-     */
-    private function getScheduleStatus($date, $time)
-    {
-        $now = Carbon::now();
-        $scheduleDateTime = Carbon::parse($date . ' ' . $time);
-        
-        if ($scheduleDateTime->isPast()) {
-            return 'completed';
-        } elseif ($scheduleDateTime->isToday()) {
-            return 'today';
-        } elseif ($scheduleDateTime->isTomorrow()) {
-            return 'tomorrow';
-        } else {
-            return 'upcoming';
-        }
-    }
-
-    /**
-     * Format date for display
-     */
-    private function formatDate($date)
-    {
-        $carbonDate = Carbon::parse($date);
-        
-        if ($carbonDate->isToday()) {
-            return 'Hari ini';
-        } elseif ($carbonDate->isTomorrow()) {
-            return 'Besok';
-        } elseif ($carbonDate->isYesterday()) {
-            return 'Kemarin';
-        } else {
-            return $carbonDate->translatedFormat('d M Y');
-        }
-    }
-
-    /**
-     * Format time for display
-     */
-    private function formatTime($time)
-    {
-        return Carbon::parse($time)->format('H:i');
     }
 }

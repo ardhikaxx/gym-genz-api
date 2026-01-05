@@ -98,15 +98,6 @@
             margin-top: 0.5rem;
         }
         
-        /* Date Filter */
-        .date-filter-container {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
         /* Responsive styles */
         @media (max-width: 768px) {
             .search-input-container {
@@ -227,7 +218,7 @@
                 <div class="d-flex justify-content-end gap-3">
                     <div class="text-end">
                         <h5 class="mb-0">{{ $jadwals->total() }}</h5>
-                        <small class="text-muted">Total Makanan</small>
+                        <small class="text-muted">Total Jadwal</small>
                     </div>
                     <div class="vr"></div>
                 </div>
@@ -636,92 +627,7 @@
             const now = new Date();
             const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
             document.getElementById('jam').value = nextHour.getHours().toString().padStart(2, '0') + ':00';
-            
-            // Load stats
-            loadStats();
         });
-
-        // Filter by date
-        async function filterByDate() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            
-            let url = new URL(window.location.href);
-            
-            if (startDate) {
-                url.searchParams.set('start_date', startDate);
-            } else {
-                url.searchParams.delete('start_date');
-            }
-            
-            if (endDate) {
-                url.searchParams.set('end_date', endDate);
-            } else {
-                url.searchParams.delete('end_date');
-            }
-            
-            window.location.href = url.toString();
-        }
-
-        // Reset filter
-        function resetFilter() {
-            const today = new Date().toISOString().split('T')[0];
-            const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-            
-            document.getElementById('startDate').value = today;
-            document.getElementById('endDate').value = nextWeek;
-            
-            let url = new URL(window.location.href);
-            url.searchParams.delete('start_date');
-            url.searchParams.delete('end_date');
-            
-            window.location.href = url.toString();
-        }
-
-        // Load statistics
-        async function loadStats() {
-            try {
-                // Calculate today's schedules
-                const today = new Date().toISOString().split('T')[0];
-                const todayRows = document.querySelectorAll(`[data-label="Tanggal"] .date-display`);
-                let todayCount = 0;
-                
-                todayRows.forEach(row => {
-                    const dateText = row.textContent.trim();
-                    const dateParts = dateText.split(' ');
-                    if (dateParts.length >= 3) {
-                        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-                        const monthIndex = monthNames.indexOf(dateParts[1]);
-                        if (monthIndex !== -1) {
-                            const date = new Date(dateParts[2], monthIndex, dateParts[0]);
-                            if (date.toISOString().split('T')[0] === today) {
-                                todayCount++;
-                            }
-                        }
-                    }
-                });
-                
-                document.getElementById('jadwalHariIni').textContent = todayCount;
-                
-                // Calculate this week's schedules
-                const now = new Date();
-                const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
-                const endOfWeek = new Date(now.setDate(now.getDate() + 6));
-                startOfWeek.setHours(0, 0, 0, 0);
-                endOfWeek.setHours(23, 59, 59, 999);
-                
-                // Get unique categories
-                const categoryElements = document.querySelectorAll('.category-badge');
-                const categories = new Set();
-                categoryElements.forEach(el => {
-                    categories.add(el.textContent.trim());
-                });
-                document.getElementById('kategoriAktif').textContent = categories.size;
-                
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
 
         // Clear error messages
         function clearErrors() {
@@ -808,7 +714,7 @@
         // Edit jadwal
         async function editJadwal(id) {
             try {
-                const response = await fetch(`/manajemen-jadwal/${id}`, {
+                const response = await fetch(`/admin/manajemen-jadwal/${id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -870,7 +776,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch(`/manajemen-jadwal/${id}`, {
+                const response = await fetch(`/admin/manajemen-jadwal/${id}`, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -927,7 +833,7 @@
             const id = document.getElementById('deleteJadwalId').value;
             
             try {
-                const response = await fetch(`/manajemen-jadwal/${id}`, {
+                const response = await fetch(`/admin/manajemen-jadwal/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -945,25 +851,16 @@
                     // Show success message
                     showToast(data.message, 'success');
                     
-                    // Remove rows from both table and grid views
+                    // Remove row from table
                     const tableRow = document.querySelector(`tr[data-jadwal-id="${id}"]`);
                     if (tableRow) {
                         tableRow.remove();
                     }
                     
-                    const gridCard = document.querySelector(`.schedule-card[data-jadwal-id="${id}"]`);
-                    if (gridCard) {
-                        gridCard.remove();
-                    }
-                    
-                    // Update stats
-                    loadStats();
-                    
                     // Reload if no rows left
                     setTimeout(() => {
                         const tableRows = document.querySelectorAll('#jadwalTableBody tr');
-                        const gridCards = document.querySelectorAll('#jadwalGrid .schedule-card');
-                        if (tableRows.length === 0 && gridCards.length === 0) {
+                        if (tableRows.length === 0) {
                             window.location.reload();
                         }
                     }, 500);
@@ -992,19 +889,6 @@
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
-                }
-            });
-            
-            // Search in grid view
-            const gridCards = document.querySelectorAll('#jadwalGrid .schedule-card');
-            gridCards.forEach(card => {
-                const jadwalName = card.querySelector('.schedule-title').textContent.toLowerCase();
-                const kategori = card.querySelector('.category-tag').textContent.toLowerCase();
-                
-                if (jadwalName.includes(searchTerm) || kategori.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
                 }
             });
         });
@@ -1085,10 +969,5 @@
             makeTableResponsive();
             window.addEventListener('resize', makeTableResponsive);
         });
-
-        // Quick duration buttons
-        function setDuration(duration) {
-            document.getElementById('durasi_workout').value = duration;
-        }
     </script>
 @endpush
