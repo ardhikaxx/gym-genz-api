@@ -26,12 +26,11 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::delete('/admin/manajemen-pengguna/{id}', [ManajemenPenggunaController::class, 'destroy'])->name('manajemen-pengguna.destroy');
 
     // Manajemen Food Plan
-    Route::get('/manajemen-food', [ManajemenFoodController::class, 'index'])->name('manajemen-food.index');
-    Route::post('/manajemen-food', [ManajemenFoodController::class, 'store'])->name('manajemen-food.store');
-    Route::get('/manajemen-food/{id}', [ManajemenFoodController::class, 'show'])->name('manajemen-food.show');
-    Route::put('/manajemen-food/{id}', [ManajemenFoodController::class, 'update'])->name('manajemen-food.update');
-    Route::delete('/manajemen-food/{id}', [ManajemenFoodController::class, 'destroy'])->name('manajemen-food.destroy');
-    Route::get('/manajemen-food/category/{category}', [ManajemenFoodController::class, 'filterByCategory'])->name('manajemen-food.filter');
+    Route::get('/admin/manajemen-food', [ManajemenFoodController::class, 'index'])->name('manajemen-food.index');
+    Route::post('/admin/manajemen-food', [ManajemenFoodController::class, 'store'])->name('manajemen-food.store');
+    Route::get('/admin/manajemen-food/{id}', [ManajemenFoodController::class, 'show'])->name('manajemen-food.show');
+    Route::put('/admin/manajemen-food/{id}', [ManajemenFoodController::class, 'update'])->name('manajemen-food.update');
+    Route::delete('/admin/manajemen-food/{id}', [ManajemenFoodController::class, 'destroy'])->name('manajemen-food.destroy');
 
     // Manajemen Jadwal Workout
     Route::get('/admin/manajemen-jadwal', [ManajemenJadwalController::class, 'index'])->name('manajemen-jadwal.index');

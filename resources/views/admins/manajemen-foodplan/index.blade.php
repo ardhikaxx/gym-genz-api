@@ -97,6 +97,41 @@
             color: var(--danger-color);
         }
 
+        /* Category badges */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .badge-pagi {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .badge-siang {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #047857;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-sore {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-malam {
+            background-color: rgba(175, 105, 238, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(175, 105, 238, 0.2);
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .search-input-container {
@@ -454,8 +489,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-purple" onclick="addNewFood()" id="addFoodBtn">
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success" onclick="addNewFood()" id="addFoodBtn">
                         <i class="fas fa-plus-circle me-2"></i>Tambah Makanan
                     </button>
                 </div>
@@ -567,7 +602,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-purple" onclick="updateFood()" id="updateFoodBtn">
                         <i class="fas fa-save me-2"></i>Simpan Perubahan
                     </button>
@@ -593,7 +628,7 @@
                     <input type="hidden" id="deleteFoodId">
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">
                         <i class="fas fa-trash me-2"></i>Hapus
                     </button>
@@ -605,50 +640,10 @@
 
 @push('scripts')
     <script>
-        // Category filter function
-        function filterByCategory(category) {
-            let url = new URL(window.location.href);
-
-            if (category === 'all') {
-                url.searchParams.delete('category');
-            } else {
-                url.searchParams.set('category', category);
-            }
-
-            window.location.href = url.toString();
-        }
-
         // Clear error messages
         function clearErrors() {
             const errorElements = document.querySelectorAll('.error-message');
             errorElements.forEach(el => el.textContent = '');
-        }
-
-        // Format number
-        function formatNumber(num) {
-            return parseFloat(num).toFixed(1);
-        }
-
-        // Get category badge class
-        function getCategoryBadgeClass(category) {
-            const classes = {
-                'pagi': 'badge-info',
-                'siang': 'badge-success',
-                'sore': 'badge-warning',
-                'malam': 'badge-purple'
-            };
-            return classes[category] || 'badge-secondary';
-        }
-
-        // Get category icon
-        function getCategoryIcon(category) {
-            const icons = {
-                'pagi': 'fa-sun',
-                'siang': 'fa-cloud-sun',
-                'sore': 'fa-cloud',
-                'malam': 'fa-moon'
-            };
-            return icons[category] || 'fa-utensils';
         }
 
         // Add new food
@@ -725,7 +720,7 @@
         // Edit food
         async function editFood(id) {
             try {
-                const response = await fetch(`/manajemen-food/${id}`, {
+                const response = await fetch(`/admin/manajemen-food/${id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -789,7 +784,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch(`/manajemen-food/${id}`, {
+                const response = await fetch(`/admin/manajemen-food/${id}`, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -847,7 +842,7 @@
             const id = document.getElementById('deleteFoodId').value;
 
             try {
-                const response = await fetch(`/manajemen-food/${id}`, {
+                const response = await fetch(`/admin/manajemen-food/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -910,7 +905,7 @@
         // Toast notification
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `toast-notification toast-${type} food-toast`;
+            toast.className = `toast-notification toast-${type}`;
             toast.innerHTML = `
                 <div class="toast-content">
                     <i class="fas fa-${type === 'success' ? 'check-circle' : 
@@ -974,25 +969,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             makeTableResponsive();
             window.addEventListener('resize', makeTableResponsive);
-
-            // Initialize category filter buttons active state
-            const currentCategory = new URLSearchParams(window.location.search).get('category');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            if (currentCategory) {
-                const activeBtn = document.querySelector(`.filter-btn[onclick*="${currentCategory}"]`);
-                if (activeBtn) {
-                    activeBtn.classList.add('active');
-                }
-            } else {
-                const allBtn = document.querySelector('.filter-btn[onclick*="all"]');
-                if (allBtn) {
-                    allBtn.classList.add('active');
-                }
-            }
         });
     </script>
 @endpush

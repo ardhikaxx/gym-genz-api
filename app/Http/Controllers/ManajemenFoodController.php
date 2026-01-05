@@ -14,7 +14,7 @@ class ManajemenFoodController extends Controller
     public function index()
     {
         $foods = Food::orderBy('created_at', 'desc')->paginate(10);
-        $categories = ['pagi', 'siang', 'sore', 'malam']; // 4 kategori makanan
+        $categories = ['pagi', 'siang', 'sore', 'malam'];
         
         return view('admins.manajemen-foodplan.index', compact('foods', 'categories'));
     }
@@ -42,7 +42,7 @@ class ManajemenFoodController extends Controller
         }
 
         try {
-            $data = [
+            $food = Food::create([
                 'nama_makanan' => $request->nama_makanan,
                 'deskripsi' => $request->deskripsi,
                 'kategori_makanan' => $request->kategori_makanan,
@@ -50,9 +50,7 @@ class ManajemenFoodController extends Controller
                 'protein' => $request->protein,
                 'karbohidrat' => $request->karbohidrat,
                 'lemak' => $request->lemak,
-            ];
-
-            $food = Food::create($data);
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -74,6 +72,7 @@ class ManajemenFoodController extends Controller
     public function show($id)
     {
         $food = Food::findOrFail($id);
+        
         return response()->json([
             'success' => true,
             'data' => $food
@@ -105,7 +104,7 @@ class ManajemenFoodController extends Controller
         }
 
         try {
-            $data = [
+            $food->update([
                 'nama_makanan' => $request->nama_makanan,
                 'deskripsi' => $request->deskripsi,
                 'kategori_makanan' => $request->kategori_makanan,
@@ -113,9 +112,7 @@ class ManajemenFoodController extends Controller
                 'protein' => $request->protein,
                 'karbohidrat' => $request->karbohidrat,
                 'lemak' => $request->lemak,
-            ];
-
-            $food->update($data);
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -151,47 +148,5 @@ class ManajemenFoodController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Get category badge color
-     */
-    private function getCategoryColor($category)
-    {
-        $colors = [
-            'pagi' => 'info',
-            'siang' => 'success',
-            'sore' => 'warning',
-            'malam' => 'purple'
-        ];
-
-        return $colors[$category] ?? 'secondary';
-    }
-
-    /**
-     * Get category icon
-     */
-    private function getCategoryIcon($category)
-    {
-        $icons = [
-            'pagi' => 'fa-sun',
-            'siang' => 'fa-cloud-sun',
-            'sore' => 'fa-cloud',
-            'malam' => 'fa-moon'
-        ];
-
-        return $icons[$category] ?? 'fa-utensils';
-    }
-
-    /**
-     * Filter foods by category
-     */
-    public function filterByCategory($category)
-    {
-        $foods = Food::where('kategori_makanan', $category)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(10);
-        
-        return view('admins.manajemen-foodplan.index', compact('foods'));
     }
 }
