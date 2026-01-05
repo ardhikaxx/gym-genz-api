@@ -26,6 +26,6 @@ class JadwalWorkout extends Model
      */
     public function workout()
     {
-        return $this->hasOne(Workout::class);
+        return $this->hasOne(Workout::class, 'jadwal_workout_id', 'id');
     }
 }

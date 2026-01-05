@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\JadwalController;
+use App\Http\Controllers\Api\WorkoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ Route::middleware('auth.token')->group(function () {
 
     // Jadwal routes
     Route::get('/jadwal/today', [JadwalController::class, 'getTodaySchedules']);
+
+    // Workout routes
+    Route::get('/workout/today', [WorkoutController::class, 'getTodayWorkouts']);
 
     // Auth + Profile routes
     Route::post('/logout', [AuthController::class, 'logout']);
