@@ -136,14 +136,12 @@ class AuthController extends Controller
      */
     public function profile(Request $request)
     {
-        $pengguna = $request->user();
+        $pengguna = Pengguna::all();
         
         return response()->json([
             'success' => true,
             'data' => [
                 'pengguna' => $pengguna,
-                'bmi' => $pengguna->bmi,
-                'bmi_category' => $pengguna->bmi_category,
             ]
         ]);
     }

@@ -35,7 +35,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ request()->routeIs('manajemen-jadwal.index') || request()->routeIs('manajemen-jadwal.*') ? 'active' : '' }}"
+                    href="{{ route('manajemen-jadwal.index') }}">
                     <i class="fas fa-calendar-alt me-2"></i>
                     Jadwal Workout
                 </a>
