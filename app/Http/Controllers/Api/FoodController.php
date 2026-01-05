@@ -30,7 +30,7 @@ class FoodController extends Controller
                 }
             }
             
-            if (count($foods) < 5) {
+            if (count($foods) < 4) {
                 $additionalFood = $this->getRandomFoodFromAnyCategory($daySeed, $categories, array_column($foods, 'id'));
                 if ($additionalFood) {
                     $foods[] = $additionalFood;
@@ -101,7 +101,7 @@ class FoodController extends Controller
             return null;
         }
         
-        $variationSeed = $seed + 12345;
+        $variationSeed = $seed + 1234;
         $index = abs($variationSeed % $total);
         
         return $query->orderBy('id')
