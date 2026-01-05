@@ -43,7 +43,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ request()->routeIs('manajemen-workout.index') || request()->routeIs('manajemen-workout.*') ? 'active' : '' }}"
+                    href="{{ route('manajemen-workout.index') }}">
                     <i class="fas fa-dumbbell me-2"></i>
                     Manajemen Workout
                 </a>

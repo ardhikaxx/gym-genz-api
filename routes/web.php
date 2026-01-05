@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ManajemenPenggunaController;
 use App\Http\Controllers\ManajemenFoodController;
 use App\Http\Controllers\ManajemenJadwalController;
+use App\Http\Controllers\ManajemenWorkoutController;
 use App\Http\Controllers\ManajemenAdminController;
 use App\Http\Controllers\DashboardController;
 
@@ -38,6 +39,14 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/manajemen-jadwal/{id}', [ManajemenJadwalController::class, 'show'])->name('manajemen-jadwal.show');
     Route::put('/admin/manajemen-jadwal/{id}', [ManajemenJadwalController::class, 'update'])->name('manajemen-jadwal.update');
     Route::delete('/admin/manajemen-jadwal/{id}', [ManajemenJadwalController::class, 'destroy'])->name('manajemen-jadwal.destroy');
+
+    // Manajemen Workout
+    Route::get('/admin/manajemen-workout', [ManajemenWorkoutController::class, 'index'])->name('manajemen-workout.index');
+    Route::post('/admin/manajemen-workout', [ManajemenWorkoutController::class, 'store'])->name('manajemen-workout.store');
+    Route::get('/admin/manajemen-workout/{id}', [ManajemenWorkoutController::class, 'show'])->name('manajemen-workout.show');
+    Route::put('/admin/manajemen-workout/{id}', [ManajemenWorkoutController::class, 'update'])->name('manajemen-workout.update');
+    Route::delete('/admin/manajemen-workout/{id}', [ManajemenWorkoutController::class, 'destroy'])->name('manajemen-workout.destroy');
+    Route::get('/admin/manajemen-workout/jadwals/available', [ManajemenWorkoutController::class, 'getAvailableJadwals'])->name('manajemen-workout.get-jadwals');
 
     // Manajemen Admin
     Route::get('/admin/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');
