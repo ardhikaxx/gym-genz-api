@@ -9,6 +9,7 @@
             position: relative;
             width: 400px;
         }
+
         .search-input-container i {
             position: absolute;
             left: 12px;
@@ -17,35 +18,42 @@
             color: #94a3b8;
             z-index: 10;
         }
+
         .search-input-container input {
             padding-left: 40px;
         }
+
         .no-data {
             text-align: center;
             padding: 3rem;
             color: #64748b;
         }
+
         .no-data i {
             font-size: 3rem;
             margin-bottom: 1rem;
             color: #cbd5e1;
         }
+
         .loading-spinner {
             text-align: center;
             padding: 2rem;
         }
+
         .avatar-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
+
         .avatar-large {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
         }
+
         .initials-avatar {
             width: 40px;
             height: 40px;
@@ -58,6 +66,7 @@
             font-weight: 600;
             font-size: 0.9rem;
         }
+
         .initials-large {
             width: 100px;
             height: 100px;
@@ -70,35 +79,43 @@
             font-weight: 700;
             font-size: 2rem;
         }
+
         .error-message {
             font-size: 0.8rem;
             margin-top: 0.25rem;
         }
+
         .password-toggle {
             cursor: pointer;
             user-select: none;
         }
+
         /* Responsive pagination */
         @media (max-width: 576px) {
             .search-input-container {
                 width: 100% !important;
             }
+
             .table-responsive {
                 font-size: 0.85rem;
             }
+
             .card-header {
                 flex-direction: column;
                 align-items: flex-start !important;
                 gap: 1rem;
             }
+
             .card-header .text-muted {
                 align-self: flex-start;
             }
+
             .pagination-container .d-flex {
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
             }
+
             .pagination-info {
                 order: -1;
             }
@@ -124,7 +141,8 @@
             <div class="col-md-6">
                 <div class="search-input-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" class="form-control" id="searchInput" placeholder="Cari admin berdasarkan nama atau email...">
+                    <input type="text" class="form-control" id="searchInput"
+                        placeholder="Cari admin berdasarkan nama atau email...">
                 </div>
             </div>
             <div class="col-md-6">
@@ -143,7 +161,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Daftar Admin</h5>
                 <div class="text-muted small">
-                    Menampilkan {{ $admins->firstItem() ?: 0 }}-{{ $admins->lastItem() ?: 0 }} dari {{ $admins->total() }} admin
+                    Menampilkan {{ $admins->firstItem() ?: 0 }}-{{ $admins->lastItem() ?: 0 }} dari {{ $admins->total() }}
+                    admin
                 </div>
             </div>
             <div class="card-body p-0">
@@ -165,16 +184,17 @@
                                 <tr data-admin-id="{{ $admin->id }}">
                                     <td data-label="No">{{ $admins->firstItem() + $index }}</td>
                                     <td data-label="Foto">
-                                        @if($admin->foto_profile)
-                                            <img src="{{ asset('admins/' . $admin->foto_profile) }}" 
-                                                 class="avatar-img" 
-                                                 alt="{{ $admin->nama_lengkap }}">
+                                        @if ($admin->foto_profile)
+                                            <img src="{{ asset('admins/' . $admin->foto_profile) }}" class="avatar-img"
+                                                alt="{{ $admin->nama_lengkap }}">
                                         @else
                                             @php
                                                 $initials = '';
                                                 $nameParts = explode(' ', $admin->nama_lengkap);
-                                                if(count($nameParts) >= 2) {
-                                                    $initials = strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1));
+                                                if (count($nameParts) >= 2) {
+                                                    $initials = strtoupper(
+                                                        substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1),
+                                                    );
                                                 } else {
                                                     $initials = strtoupper(substr($admin->nama_lengkap, 0, 2));
                                                 }
@@ -186,7 +206,8 @@
                                     </td>
                                     <td data-label="Nama Lengkap">
                                         <div class="fw-medium">{{ $admin->nama_lengkap }}</div>
-                                        <div class="text-muted small">ID: ADM{{ str_pad($admin->id, 3, '0', STR_PAD_LEFT) }}</div>
+                                        <div class="text-muted small">ID:
+                                            ADM{{ str_pad($admin->id, 3, '0', STR_PAD_LEFT) }}</div>
                                     </td>
                                     <td data-label="Email">{{ $admin->email }}</td>
                                     <td data-label="No. Telepon">{{ $admin->nomor_telfon ?? '-' }}</td>
@@ -200,10 +221,11 @@
                                             <button class="btn btn-sm btn-purple" onclick="editAdmin({{ $admin->id }})">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            @if($admins->count() > 1)
-                                            <button class="btn btn-sm btn-danger" onclick="showDeleteConfirm({{ $admin->id }})">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            @if ($admins->count() > 1)
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="showDeleteConfirm({{ $admin->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             @endif
                                         </div>
                                     </td>
@@ -219,83 +241,84 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Pagination -->
-                @if($admins->hasPages())
-                <div class="pagination-container">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="pagination-info">
-                            Halaman {{ $admins->currentPage() }} dari {{ $admins->lastPage() }}
+                @if ($admins->hasPages())
+                    <div class="pagination-container">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="pagination-info">
+                                Halaman {{ $admins->currentPage() }} dari {{ $admins->lastPage() }}
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    {{-- Previous Page Link --}}
+                                    @if ($admins->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $admins->previousPageUrl() }}" rel="prev">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Pagination Elements --}}
+                                    @php
+                                        $start = max(1, $admins->currentPage() - 2);
+                                        $end = min($admins->lastPage(), $admins->currentPage() + 2);
+                                    @endphp
+
+                                    @if ($start > 1)
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $admins->url(1) }}">1</a>
+                                        </li>
+                                        @if ($start > 2)
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        @endif
+                                    @endif
+
+                                    @for ($i = $start; $i <= $end; $i++)
+                                        <li class="page-item {{ $admins->currentPage() == $i ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $admins->url($i) }}">{{ $i }}</a>
+                                        </li>
+                                    @endfor
+
+                                    @if ($end < $admins->lastPage())
+                                        @if ($end < $admins->lastPage() - 1)
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        @endif
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $admins->url($admins->lastPage()) }}">{{ $admins->lastPage() }}</a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Next Page Link --}}
+                                    @if ($admins->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $admins->nextPageUrl() }}" rel="next">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </span>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
                         </div>
-                        <nav>
-                            <ul class="pagination">
-                                {{-- Previous Page Link --}}
-                                @if ($admins->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $admins->previousPageUrl() }}" rel="prev">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- Pagination Elements --}}
-                                @php
-                                    $start = max(1, $admins->currentPage() - 2);
-                                    $end = min($admins->lastPage(), $admins->currentPage() + 2);
-                                @endphp
-                                
-                                @if($start > 1)
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $admins->url(1) }}">1</a>
-                                    </li>
-                                    @if($start > 2)
-                                        <li class="page-item disabled">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                    @endif
-                                @endif
-                                
-                                @for ($i = $start; $i <= $end; $i++)
-                                    <li class="page-item {{ ($admins->currentPage() == $i) ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $admins->url($i) }}">{{ $i }}</a>
-                                    </li>
-                                @endfor
-                                
-                                @if($end < $admins->lastPage())
-                                    @if($end < $admins->lastPage() - 1)
-                                        <li class="page-item disabled">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                    @endif
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $admins->url($admins->lastPage()) }}">{{ $admins->lastPage() }}</a>
-                                    </li>
-                                @endif
-
-                                {{-- Next Page Link --}}
-                                @if ($admins->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $admins->nextPageUrl() }}" rel="next">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
                     </div>
-                </div>
                 @endif
             </div>
         </div>
@@ -324,7 +347,8 @@
                                         <label for="adminPhoto" class="upload-label btn btn-sm btn-purple mt-2">
                                             <i class="fas fa-upload me-1"></i>Upload Foto
                                         </label>
-                                        <input type="file" id="adminPhoto" name="foto_profile" accept="image/*" hidden>
+                                        <input type="file" id="adminPhoto" name="foto_profile" accept="image/*"
+                                            hidden>
                                         <div id="photoError" class="error-message text-danger"></div>
                                     </div>
                                 </div>
@@ -335,13 +359,14 @@
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Nama Lengkap<span class="text-danger">*</span></label>
+                                            <label class="form-label">Nama Lengkap<span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-user"></i>
                                                 </span>
-                                                <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" 
-                                                       placeholder="Masukkan nama lengkap" required>
+                                                <input type="text" class="form-control" id="nama_lengkap"
+                                                    name="nama_lengkap" placeholder="Masukkan nama lengkap" required>
                                             </div>
                                             <div id="namaError" class="error-message text-danger"></div>
                                         </div>
@@ -353,21 +378,22 @@
                                                 <span class="input-group-text">
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
-                                                <input type="email" class="form-control" id="email" name="email" 
-                                                       placeholder="contoh@email.com" required>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="contoh@email.com" required>
                                             </div>
                                             <div id="emailError" class="error-message text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
+                                            <label class="form-label">Nomor Telepon <span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-phone"></i>
                                                 </span>
-                                                <input type="tel" class="form-control" id="nomor_telfon" name="nomor_telfon" 
-                                                       placeholder="081234567890" required>
+                                                <input type="tel" class="form-control" id="nomor_telfon"
+                                                    name="nomor_telfon" placeholder="081234567890" required>
                                             </div>
                                             <div id="phoneError" class="error-message text-danger"></div>
                                         </div>
@@ -385,9 +411,10 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-lock"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="password" name="password" 
-                                               placeholder="Masukkan password" required>
-                                        <span class="input-group-text password-toggle" onclick="togglePassword('password', this)">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            placeholder="Masukkan password" required>
+                                        <span class="input-group-text password-toggle"
+                                            onclick="togglePassword('password', this)">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                     </div>
@@ -397,14 +424,16 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Konfirmasi Password <span class="text-danger">*</span></label>
+                                    <label class="form-label">Konfirmasi Password <span
+                                            class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-lock"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="password_confirmation" 
-                                               name="password_confirmation" placeholder="Ulangi password" required>
-                                        <span class="input-group-text password-toggle" onclick="togglePassword('password_confirmation', this)">
+                                        <input type="password" class="form-control" id="password_confirmation"
+                                            name="password_confirmation" placeholder="Ulangi password" required>
+                                        <span class="input-group-text password-toggle"
+                                            onclick="togglePassword('password_confirmation', this)">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                     </div>
@@ -435,7 +464,7 @@
                 <div class="modal-body">
                     <form id="editAdminForm" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
                         <input type="hidden" id="editAdminId">
                         <div class="row g-3">
                             <!-- Profile Photo -->
@@ -450,11 +479,13 @@
                                             <label for="editAdminPhoto" class="upload-label btn btn-sm btn-purple">
                                                 <i class="fas fa-upload me-1"></i>Ganti Foto
                                             </label>
-                                            <button type="button" class="btn btn-sm btn-danger" onclick="removeAdminPhoto()">
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="removeAdminPhoto()">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
-                                        <input type="file" id="editAdminPhoto" name="foto_profile" accept="image/*" hidden>
+                                        <input type="file" id="editAdminPhoto" name="foto_profile" accept="image/*"
+                                            hidden>
                                         <div id="editPhotoError" class="error-message text-danger"></div>
                                     </div>
                                 </div>
@@ -465,12 +496,14 @@
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                                            <label class="form-label">Nama Lengkap <span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-user"></i>
                                                 </span>
-                                                <input type="text" class="form-control" id="editNamaLengkap" name="nama_lengkap" required>
+                                                <input type="text" class="form-control" id="editNamaLengkap"
+                                                    name="nama_lengkap" required>
                                             </div>
                                             <div id="editNamaError" class="error-message text-danger"></div>
                                         </div>
@@ -482,19 +515,22 @@
                                                 <span class="input-group-text">
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
-                                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                                                <input type="email" class="form-control" id="editEmail" name="email"
+                                                    required>
                                             </div>
                                             <div id="editEmailError" class="error-message text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
+                                            <label class="form-label">Nomor Telepon <span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-phone"></i>
                                                 </span>
-                                                <input type="tel" class="form-control" id="editNomorTelfon" name="nomor_telfon" required>
+                                                <input type="tel" class="form-control" id="editNomorTelfon"
+                                                    name="nomor_telfon" required>
                                             </div>
                                             <div id="editPhoneError" class="error-message text-danger"></div>
                                         </div>
@@ -512,9 +548,10 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-lock"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="editPassword" name="password" 
-                                               placeholder="Kosongkan jika tidak ingin mengubah">
-                                        <span class="input-group-text password-toggle" onclick="togglePassword('editPassword', this)">
+                                        <input type="password" class="form-control" id="editPassword" name="password"
+                                            placeholder="Kosongkan jika tidak ingin mengubah">
+                                        <span class="input-group-text password-toggle"
+                                            onclick="togglePassword('editPassword', this)">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                     </div>
@@ -529,9 +566,10 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-lock"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="editPasswordConfirmation" 
-                                               name="password_confirmation" placeholder="Konfirmasi password baru">
-                                        <span class="input-group-text password-toggle" onclick="togglePassword('editPasswordConfirmation', this)">
+                                        <input type="password" class="form-control" id="editPasswordConfirmation"
+                                            name="password_confirmation" placeholder="Konfirmasi password baru">
+                                        <span class="input-group-text password-toggle"
+                                            onclick="togglePassword('editPasswordConfirmation', this)">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                     </div>
@@ -662,10 +700,10 @@
         async function addNewAdmin() {
             const form = document.getElementById('addAdminForm');
             const formData = new FormData(form);
-            
+
             // Clear previous errors
             clearErrors();
-            
+
             // Show loading
             const btn = document.getElementById('addAdminBtn');
             const originalText = btn.innerHTML;
@@ -673,7 +711,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch('{{ route("manajemen-admin.store") }}', {
+                const response = await fetch('{{ route('manajemen-admin.store') }}', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -687,15 +725,16 @@
                 if (data.success) {
                     // Reset form
                     form.reset();
-                    document.getElementById('profilePreview').innerHTML = '<i class="fas fa-user-circle fa-4x text-muted"></i>';
-                    
+                    document.getElementById('profilePreview').innerHTML =
+                        '<i class="fas fa-user-circle fa-4x text-muted"></i>';
+
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addAdminModal'));
                     modal.hide();
-                    
+
                     // Show success message
                     showToast(data.message, 'success');
-                    
+
                     // Reload page to show new admin
                     setTimeout(() => {
                         window.location.reload();
@@ -736,13 +775,13 @@
 
                 if (data.success) {
                     const admin = data.data;
-                    
+
                     // Fill form
                     document.getElementById('editAdminId').value = admin.id;
                     document.getElementById('editNamaLengkap').value = admin.nama_lengkap;
                     document.getElementById('editEmail').value = admin.email;
                     document.getElementById('editNomorTelfon').value = admin.nomor_telfon || '';
-                    
+
                     // Set photo preview
                     const preview = document.getElementById('editProfilePreview');
                     if (admin.foto_profile) {
@@ -751,10 +790,10 @@
                         const initials = getInitials(admin.nama_lengkap);
                         preview.innerHTML = `<div class="initials-large">${initials}</div>`;
                     }
-                    
+
                     // Clear errors
                     clearErrors();
-                    
+
                     // Show modal
                     const modal = new bootstrap.Modal(document.getElementById('editAdminModal'));
                     modal.show();
@@ -777,14 +816,15 @@
         }
 
         // Update admin
+        // Update admin - Gunakan route yang benar
         async function updateAdmin() {
             const id = document.getElementById('editAdminId').value;
             const form = document.getElementById('editAdminForm');
             const formData = new FormData(form);
-            
+
             // Clear previous errors
             clearErrors();
-            
+
             // Show loading
             const btn = document.getElementById('updateAdminBtn');
             const originalText = btn.innerHTML;
@@ -792,13 +832,13 @@
             btn.disabled = true;
 
             try {
+                
                 const response = await fetch(`/admin/manajemen-admin/${id}`, {
                     method: 'POST',
                     body: formData,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                        'X-HTTP-Method-Override': 'PUT'
+                        'Accept': 'application/json'
                     }
                 });
 
@@ -808,10 +848,10 @@
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('editAdminModal'));
                     modal.hide();
-                    
+
                     // Show success message
                     showToast(data.message, 'success');
-                    
+
                     // Reload page to show updated data
                     setTimeout(() => {
                         window.location.reload();
@@ -820,7 +860,8 @@
                     // Show validation errors
                     if (data.errors) {
                         Object.keys(data.errors).forEach(key => {
-                            const errorElement = document.getElementById('edit' + key.charAt(0).toUpperCase() + key.slice(1) + 'Error');
+                            const errorElement = document.getElementById('edit' + key.charAt(0).toUpperCase() +
+                                key.slice(1) + 'Error');
                             if (errorElement) {
                                 errorElement.textContent = data.errors[key][0];
                             }
@@ -841,7 +882,7 @@
         // Remove admin photo
         async function removeAdminPhoto() {
             const id = document.getElementById('editAdminId').value;
-            
+
             if (!confirm('Yakin ingin menghapus foto profil?')) {
                 return;
             }
@@ -861,7 +902,8 @@
                     // Update preview
                     const adminName = document.getElementById('editNamaLengkap').value;
                     const initials = getInitials(adminName);
-                    document.getElementById('editProfilePreview').innerHTML = `<div class="initials-large">${initials}</div>`;
+                    document.getElementById('editProfilePreview').innerHTML =
+                        `<div class="initials-large">${initials}</div>`;
                     showToast(data.message, 'success');
                 } else {
                     showToast(data.message, 'error');
@@ -882,7 +924,7 @@
         // Delete admin
         async function confirmDelete() {
             const id = document.getElementById('deleteAdminId').value;
-            
+
             try {
                 const response = await fetch(`/admin/manajemen-admin/${id}`, {
                     method: 'DELETE',
@@ -898,16 +940,16 @@
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
                     modal.hide();
-                    
+
                     // Show success message
                     showToast(data.message, 'success');
-                    
+
                     // Remove row from table
                     const row = document.querySelector(`tr[data-admin-id="${id}"]`);
                     if (row) {
                         row.remove();
                     }
-                    
+
                     // Reload if no rows left
                     setTimeout(() => {
                         const rows = document.querySelectorAll('#adminTableBody tr');
@@ -930,11 +972,11 @@
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#adminTableBody tr');
-            
+
             rows.forEach(row => {
                 const name = row.querySelector('td:nth-child(3) .fw-medium').textContent.toLowerCase();
                 const email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-                
+
                 if (name.includes(searchTerm) || email.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
@@ -976,14 +1018,15 @@
         }
 
         // Reset add modal when closed
-        document.getElementById('addAdminModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('addAdminModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('addAdminForm').reset();
-            document.getElementById('profilePreview').innerHTML = '<i class="fas fa-user-circle fa-4x text-muted"></i>';
+            document.getElementById('profilePreview').innerHTML =
+                '<i class="fas fa-user-circle fa-4x text-muted"></i>';
             clearErrors();
         });
 
         // Reset edit modal when closed
-        document.getElementById('editAdminModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('editAdminModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('editAdminForm').reset();
             clearErrors();
         });
@@ -994,7 +1037,7 @@
                 const table = document.querySelector('.table');
                 const headers = table.querySelectorAll('thead th');
                 const rows = table.querySelectorAll('tbody tr');
-                
+
                 headers.forEach((header, index) => {
                     const label = header.textContent;
                     rows.forEach(row => {
