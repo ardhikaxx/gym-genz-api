@@ -19,6 +19,40 @@ class WorkoutSeeder extends Seeder
                 'jadwal' => [
                     'nama_jadwal' => 'Full Body Strength',
                     'kategori_jadwal' => 'Strength Training',
+                    'tanggal' => Carbon::today()->format('Y-m-d'),
+                    'jam' => '07:00',
+                    'durasi_workout' => '60 menit',
+                ],
+                'workout' => [
+                    'nama_workout' => 'Full Body Compound Lifts',
+                    'deskripsi' => 'Latihan seluruh tubuh dengan fokus pada compound movements untuk membangun kekuatan dan massa otot.',
+                    'equipment' => 'Barbell, Dumbbells, Bench, Squat Rack',
+                    'kategori' => 'With Equipment',
+                    'exercises' => 6,
+                    'status' => 'belum',
+                ]
+            ],
+            [
+                'jadwal' => [
+                    'nama_jadwal' => 'HIIT Cardio',
+                    'kategori_jadwal' => 'Cardio',
+                    'tanggal' => Carbon::today()->format('Y-m-d'),
+                    'jam' => '17:30',
+                    'durasi_workout' => '45 menit',
+                ],
+                'workout' => [
+                    'nama_workout' => 'High Intensity Interval Training',
+                    'deskripsi' => 'Latihan kardio intensitas tinggi dengan interval untuk membakar kalori dan meningkatkan metabolisme.',
+                    'equipment' => 'Treadmill, Stationary Bike, Jump Rope',
+                    'kategori' => 'With Equipment',
+                    'exercises' => 8,
+                    'status' => 'belum',
+                ]
+            ],
+            [
+                'jadwal' => [
+                    'nama_jadwal' => 'Full Body Strength',
+                    'kategori_jadwal' => 'Strength Training',
                     'tanggal' => Carbon::today()->addDays(1)->format('Y-m-d'),
                     'jam' => '07:00',
                     'durasi_workout' => '60 menit',
