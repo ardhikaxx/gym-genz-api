@@ -21,7 +21,7 @@ class AuthController extends Controller
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:penggunas',
             'password' => 'required|string|min:8|confirmed',
-            'jenis_kelamin' => 'required|in:L,P',
+            'jenis_kelamin' => 'nullable|in:L,P',
             'tinggi_badan' => 'nullable|numeric|min:50|max:250',
             'berat_badan' => 'nullable|numeric|min:20|max:300',
             'alergi' => 'nullable|string|max:500',
@@ -41,7 +41,7 @@ class AuthController extends Controller
         if ($request->hasFile('foto_profile')) {
             $file = $request->file('foto_profile');
             $fotoProfileName = time() . '_' . Str::slug($request->nama_lengkap) . '.' . $file->getClientOriginalExtension();
-            
+
             // Save to public/profile directory
             $file->move(public_path('profile'), $fotoProfileName);
         }
@@ -50,7 +50,7 @@ class AuthController extends Controller
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'jenis_kelamin' => $request->jenis_kelamin,
+            'jenis_kelamin' => $request->jenis_kelamin ?? 'L',
             'tinggi_badan' => $request->tinggi_badan,
             'berat_badan' => $request->berat_badan,
             'alergi' => $request->alergi,
@@ -112,7 +112,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $pengguna = $this->getAuthenticatedPengguna($request);
-        
+
         if (!$pengguna) {
             return response()->json([
                 'success' => false,
@@ -134,14 +134,14 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
         $pengguna = $this->getAuthenticatedPengguna($request);
-        
+
         if (!$pengguna) {
             return response()->json([
                 'success' => false,
                 'message' => 'Token tidak valid'
             ], 401);
         }
-        
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -158,7 +158,7 @@ class AuthController extends Controller
     public function updateProfile(Request $request)
     {
         $pengguna = $this->getAuthenticatedPengguna($request);
-        
+
         if (!$pengguna) {
             return response()->json([
                 'success' => false,
@@ -190,10 +190,10 @@ class AuthController extends Controller
             if ($pengguna->foto_profile && file_exists(public_path('profile/' . $pengguna->foto_profile))) {
                 unlink(public_path('profile/' . $pengguna->foto_profile));
             }
-            
+
             $file = $request->file('foto_profile');
             $fotoProfileName = time() . '_' . Str::slug($request->nama_lengkap ?? $pengguna->nama_lengkap) . '.' . $file->getClientOriginalExtension();
-            
+
             // Save to public/profile directory
             $file->move(public_path('profile'), $fotoProfileName);
             $pengguna->foto_profile = $fotoProfileName;
@@ -229,7 +229,7 @@ class AuthController extends Controller
     public function changePassword(Request $request)
     {
         $pengguna = $this->getAuthenticatedPengguna($request);
-        
+
         if (!$pengguna) {
             return response()->json([
                 'success' => false,
@@ -268,44 +268,19 @@ class AuthController extends Controller
     }
 
     /**
-     * Validate token
-     */
-    public function validateToken(Request $request)
-    {
-        $pengguna = $this->getAuthenticatedPengguna($request);
-        
-        if (!$pengguna) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token tidak valid'
-            ], 401);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Token valid',
-            'data' => [
-                'pengguna' => $pengguna,
-                'bmi' => $pengguna->bmi,
-                'bmi_category' => $pengguna->bmi_category,
-            ]
-        ]);
-    }
-
-    /**
      * Helper method to get authenticated pengguna from token
      */
     private function getAuthenticatedPengguna(Request $request)
     {
         $token = $request->header('Authorization');
-        
+
         if (!$token) {
             return null;
         }
 
         // Remove "Bearer " prefix if present
         $token = str_replace('Bearer ', '', $token);
-        
+
         return Pengguna::validateAuthToken($token);
     }
 }

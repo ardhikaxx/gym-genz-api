@@ -33,6 +33,6 @@ Route::middleware('auth.token')->group(function () {
     // Auth + Profile routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
-    Route::put('/profile/update', [AuthController::class, 'updateProfile']);
+    Route::post('/profile/update', [AuthController::class, 'updateProfile']);
     Route::post('/profile/change-password', [AuthController::class, 'changePassword']);
 });
