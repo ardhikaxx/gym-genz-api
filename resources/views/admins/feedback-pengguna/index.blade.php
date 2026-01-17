@@ -69,9 +69,10 @@
 
         /* Review text ellipsis */
         .review-text {
-            max-width: 200px;
+            max-width: 330px;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /* Responsive pagination */
