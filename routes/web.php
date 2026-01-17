@@ -7,6 +7,7 @@ use App\Http\Controllers\ManajemenPenggunaController;
 use App\Http\Controllers\ManajemenFoodController;
 use App\Http\Controllers\ManajemenJadwalController;
 use App\Http\Controllers\ManajemenWorkoutController;
+use App\Http\Controllers\FeedbackPenggunaController;
 use App\Http\Controllers\ManajemenAdminController;
 use App\Http\Controllers\DashboardController;
 
@@ -47,6 +48,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('/admin/manajemen-workout/{id}', [ManajemenWorkoutController::class, 'update'])->name('manajemen-workout.update');
     Route::delete('/admin/manajemen-workout/{id}', [ManajemenWorkoutController::class, 'destroy'])->name('manajemen-workout.destroy');
     Route::get('/admin/manajemen-workout/jadwals/available', [ManajemenWorkoutController::class, 'getAvailableJadwals'])->name('manajemen-workout.get-jadwals');
+
+    // Feedback Pengguna
+    Route::get('/admin/feedback-pengguna', [FeedbackPenggunaController::class, 'index'])->name('feedback-pengguna.index');
+    Route::get('/admin/feedback-pengguna/{id}', [FeedbackPenggunaController::class, 'show'])->name('feedback-pengguna.show');
 
     // Manajemen Admin
     Route::get('/admin/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');

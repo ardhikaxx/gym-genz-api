@@ -51,6 +51,14 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('feedback-pengguna.index') ? 'active' : '' }}"
+                    href="{{ route('feedback-pengguna.index') }}">
+                    <i class="fas fa-comment-dots me-2"></i>
+                    Feedback Pengguna
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('manajemen-admin.index') || request()->routeIs('manajemen-admin.*') ? 'active' : '' }}"
                     href="{{ route('manajemen-admin.index') }}">
                     <i class="fas fa-user-shield me-2"></i>
