@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\JadwalController;
 use App\Http\Controllers\Api\WorkoutController;
+use App\Http\Controllers\Api\FeedBackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,8 @@ Route::middleware('auth.token')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/profile/update', [AuthController::class, 'updateProfile']);
     Route::post('/profile/change-password', [AuthController::class, 'changePassword']);
+
+    // Feedback routes
+    Route::post('/feedback', [FeedBackController::class, 'store']);
+    Route::get('/feedback/my', [FeedBackController::class, 'myFeedback']);
 });

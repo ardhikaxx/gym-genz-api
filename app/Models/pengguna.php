@@ -135,4 +135,12 @@ class Pengguna extends Authenticatable
      * Append calculated attributes to array
      */
     protected $appends = ['foto_profile_url', 'bmi', 'bmi_category'];
+
+    /**
+     * Relasi ke model Feedback
+     */
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'id_pengguna', 'id');
+    }
 }
