@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             FoodSeeder::class,
             WorkoutSeeder::class,
+            FeedbackSeeder::class,
         ]);
     }
 }

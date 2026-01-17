@@ -60,6 +60,12 @@
             font-size: 0.9rem;
         }
 
+        .initials-avatar.small {
+            width: 32px;
+            height: 32px;
+            font-size: 0.8rem;
+        }
+
         /* Rating stars in table */
         .table-rating {
             display: flex;
@@ -153,6 +159,13 @@
             width: 70px;
             height: 70px;
             font-size: 1.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #AF69EE, #7C3AED);
+            color: white;
+            font-weight: 600;
         }
 
         /* Rating Display */
@@ -256,6 +269,299 @@
             transform: translateY(0);
             opacity: 1;
         }
+
+        /* Sentiment Analysis Styles */
+        .sentiment-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .sentiment-positive {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .sentiment-negative {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .sentiment-neutral {
+            background-color: rgba(234, 179, 8, 0.1);
+            color: #ca8a04;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+        
+        .sentiment-unknown {
+            background-color: rgba(100, 116, 139, 0.1);
+            color: #64748b;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        
+        .sentiment-no_review {
+            background-color: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+        
+        .analysis-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .analysis-card h5 {
+            color: white;
+        }
+        
+        .analysis-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: black;
+            font-weight: 600;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .probability-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .probability-fill.positive { background: #10b981; }
+        .probability-fill.negative { background: #ef4444; }
+        .probability-fill.neutral { background: #f59e0b; }
+        
+        .modal-sentiment .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .sentiment-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.2s ease;
+        }
+        
+        .sentiment-result-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .sentiment-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-label {
+            min-width: 60px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .progress-bar-custom {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .probability-value {
+            min-width: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: right;
+        }
+        
+        .btn-purple {
+            background: linear-gradient(135deg, #AF69EE, #7C3AED);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(175, 105, 238, 0.3);
+            color: white;
+        }
+        
+        .bg-gradient-purple {
+            background: linear-gradient(135deg, #AF69EE, #7C3AED);
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+        
+        .toast-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .toast-success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .toast-error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .toast-warning {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .toast-info {
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.25rem;
+            margin-left: 1rem;
+        }
+        
+        .rating-stars-large {
+            display: flex;
+            gap: 0.25rem;
+            font-size: 1.5rem;
+        }
+        
+        .user-avatar-large {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #AF69EE, #7C3AED);
+            color: white;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        
+        .probability-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .review-text-full {
+            line-height: 1.6;
+            color: #334155;
+        }
+        
+        .badge.bg-purple {
+            background: linear-gradient(135deg, #AF69EE, #7C3AED);
+        }
+        
+        .text-purple {
+            color: #7C3AED !important;
+        }
+        
+        .btn-outline-light {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+        }
+        
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            color: white;
+        }
+        
+        .bg-opacity-10 {
+            background-color: rgba(var(--color-rgb), 0.1) !important;
+        }
+        
+        .border-opacity-25 {
+            border-color: rgba(var(--color-rgb), 0.25) !important;
+        }
+        
+        .spinner-border.text-purple {
+            color: #7C3AED !important;
+        }
+        
+        .probability-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
     </style>
 @endpush
 
@@ -267,7 +573,58 @@
                 <h1 class="h3 mb-2 text-dark">Feedback Pengguna</h1>
                 <p class="text-muted">Kelola ulasan dan rating dari pengguna</p>
             </div>
+            <div>
+                <button class="btn btn-purple" onclick="runSentimentAnalysis()" id="analyzeBtn">
+                    <i class="fas fa-chart-line me-2"></i>Analisis Sentimen
+                </button>
+            </div>
         </div>
+
+        <!-- Sentiment Analysis Results Card -->
+        @if($hasAnalysis && $analysisSummary)
+        <div class="analysis-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-pie me-2"></i>Hasil Analisis Sentimen
+                </h5>
+                <small class="opacity-75">
+                    Terakhir diupdate: {{ \Carbon\Carbon::parse($analysisSummary['analysis_date'])->format('d/m/Y H:i') }}
+                </small>
+            </div>
+            
+            <div class="analysis-stats">
+                <div class="stat-item">
+                    <div class="stat-value text-black">{{ $analysisSummary['total_feedback'] }}</div>
+                    <div class="stat-label">Total Feedback</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-success">{{ $analysisSummary['positive'] ?? 0 }}</div>
+                    <div class="stat-label">Positif</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-warning">{{ $analysisSummary['neutral'] ?? 0 }}</div>
+                    <div class="stat-label">Netral</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-danger">{{ $analysisSummary['negative'] ?? 0 }}</div>
+                    <div class="stat-label">Negatif</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-black">{{ number_format($analysisSummary['mrr'], 3) }}</div>
+                    <div class="stat-label">MRR Score</div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end mt-3 gap-2">
+                <button class="btn btn-sm btn-light" onclick="showSentimentResults()">
+                    <i class="fas fa-list me-1"></i>Lihat Detail
+                </button>
+                <button class="btn btn-sm btn-outline-light" onclick="runSentimentAnalysis()">
+                    <i class="fas fa-redo me-1"></i>Analisis Ulang
+                </button>
+            </div>
+        </div>
+        @endif
 
         <!-- Search -->
         <div class="row mb-4">
@@ -285,6 +642,16 @@
                         <small class="text-muted">Total Feedback</small>
                     </div>
                     <div class="vr"></div>
+                    <div class="text-end">
+                        <h5 class="mb-0">
+                            @if($hasAnalysis && $analysisSummary)
+                                {{ $analysisSummary['positive'] ?? 0 }}
+                            @else
+                                0
+                            @endif
+                        </h5>
+                        <small class="text-muted">Feedback Positif</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -380,7 +747,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="no-data">
+                                    <td colspan="8" class="no-data">
                                         <i class="fas fa-comment-slash mt-3"></i>
                                         <p class="text-muted">Belum ada feedback dari pengguna</p>
                                     </td>
@@ -571,10 +938,73 @@
             </div>
         </div>
     </div>
+
+    <!-- Sentiment Results Modal -->
+    <div class="modal fade" id="sentimentResultsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content modal-sentiment">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-chart-bar me-2"></i>Hasil Analisis Sentimen
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center" id="sentimentLoading">
+                        <div class="spinner-border text-purple" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Memuat hasil analisis...</p>
+                    </div>
+                    
+                    <div id="sentimentResultsContainer" style="display: none;">
+                        <!-- Results will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-purple" onclick="runSentimentAnalysis()">
+                        <i class="fas fa-redo me-1"></i>Analisis Ulang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Progress Modal -->
+    <div class="modal fade" id="analysisProgressModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-chart-line me-2"></i>Analisis Sentimen
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="spinner-border text-purple mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h6>Sedang menganalisis feedback...</h6>
+                        <p class="text-muted small" id="progressMessage">Memulai proses analisis sentimen</p>
+                        <div class="progress mt-3" style="height: 6px;">
+                            <div id="analysisProgressBar" class="progress-bar bg-purple" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <div class="mt-3">
+                            <span id="progressPercentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script>
+        // CSRF Token untuk AJAX requests
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         // Get initials from name
         function getInitials(name) {
             if (!name) return '??';
@@ -709,8 +1139,9 @@
                 const name = row.querySelector('td:nth-child(3) .fw-medium')?.textContent.toLowerCase() || '';
                 const review = row.querySelector('td:nth-child(4) .review-text')?.textContent.toLowerCase() || '';
                 const rating = row.querySelector('td:nth-child(5) .rating-value')?.textContent.toLowerCase() || '';
+                const sentiment = row.querySelector('td:nth-child(6) .sentiment-badge')?.textContent.toLowerCase() || '';
 
-                if (name.includes(searchTerm) || review.includes(searchTerm) || rating.includes(searchTerm)) {
+                if (name.includes(searchTerm) || review.includes(searchTerm) || rating.includes(searchTerm) || sentiment.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
@@ -725,9 +1156,10 @@
             toast.innerHTML = `
                 <div class="toast-content">
                     <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                    type === 'error' ? 'exclamation-circle' :
                                     type === 'warning' ? 'exclamation-triangle' : 
-                                    'info-circle'} me-2"></i>
-                    ${message}
+                                    'info-circle'} me-2 text-${type}"></i>
+                    <span>${message}</span>
                 </div>
                 <button class="toast-close" onclick="this.parentElement.remove()">
                     <i class="fas fa-times"></i>
@@ -747,7 +1179,7 @@
                         toast.parentElement.removeChild(toast);
                     }
                 }, 300);
-            }, 3000);
+            }, 5000);
         }
 
         // Make table responsive on mobile
@@ -771,10 +1203,371 @@
             }
         }
 
-        // Initialize responsive table
+        // Run sentiment analysis
+        async function runSentimentAnalysis() {
+            if (!confirm('Jalankan analisis sentimen? Proses ini mungkin memerlukan waktu beberapa menit.')) {
+                return;
+            }
+            
+            try {
+                // Tampilkan modal progress
+                const progressModal = new bootstrap.Modal(document.getElementById('analysisProgressModal'));
+                progressModal.show();
+                
+                // Update progress secara bertahap
+                const progressBar = document.getElementById('analysisProgressBar');
+                const progressPercentage = document.getElementById('progressPercentage');
+                const progressMessage = document.getElementById('progressMessage');
+                
+                // Simulasi progress
+                const progressSteps = [
+                    { percentage: 10, message: 'Menyiapkan data feedback...' },
+                    { percentage: 30, message: 'Menghubungkan ke database...' },
+                    { percentage: 50, message: 'Memproses analisis sentimen...' },
+                    { percentage: 75, message: 'Menghitung statistik MRR...' },
+                    { percentage: 90, message: 'Menyimpan hasil analisis...' },
+                ];
+                
+                let currentStep = 0;
+                const progressInterval = setInterval(() => {
+                    if (currentStep < progressSteps.length) {
+                        const step = progressSteps[currentStep];
+                        progressBar.style.width = step.percentage + '%';
+                        progressPercentage.textContent = step.percentage + '%';
+                        progressMessage.textContent = step.message;
+                        currentStep++;
+                    }
+                }, 1000);
+                
+                // Kirim request ke server
+                const response = await fetch('/admin/feedback/analyze-sentiment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+                
+                clearInterval(progressInterval);
+                
+                const data = await response.json();
+                
+                // Tampilkan progress 100%
+                progressBar.style.width = '100%';
+                progressPercentage.textContent = '100%';
+                progressMessage.textContent = 'Analisis selesai!';
+                
+                setTimeout(() => {
+                    progressModal.hide();
+                    
+                    if (data.success) {
+                        showToast(data.message, 'success');
+                        
+                        // Reload page untuk menampilkan hasil
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showToast(data.message, 'error');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat analisis sentimen', 'error');
+                
+                // Tutup modal progress
+                const progressModal = bootstrap.Modal.getInstance(document.getElementById('analysisProgressModal'));
+                if (progressModal) {
+                    progressModal.hide();
+                }
+            }
+        }
+
+        // Show sentiment results
+        async function showSentimentResults(page = 1) {
+            const modal = new bootstrap.Modal(document.getElementById('sentimentResultsModal'));
+            modal.show();
+            
+            try {
+                const response = await fetch(`/admin/feedback/sentiment-results?page=${page}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderSentimentResults(data);
+                } else {
+                    document.getElementById('sentimentLoading').innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-exclamation-circle fa-2x mb-3 opacity-50"></i>
+                            <p>${data.message || 'Gagal memuat hasil analisis'}</p>
+                            <button class="btn btn-purple mt-2" onclick="runSentimentAnalysis()">
+                                <i class="fas fa-play me-1"></i>Jalankan Analisis
+                            </button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('sentimentLoading').innerHTML = `
+                    <div class="text-center text-danger py-4">
+                        <i class="fas fa-times-circle fa-2x mb-3"></i>
+                        <p>Terjadi kesalahan saat memuat data</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render sentiment results
+        function renderSentimentResults(data) {
+            const container = document.getElementById('sentimentResultsContainer');
+            const loading = document.getElementById('sentimentLoading');
+            
+            loading.style.display = 'none';
+            container.style.display = 'block';
+            
+            let html = `
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h2 class="text-dark mb-1">${data.summary.total_feedback || 0}</h2>
+                                    <p class="text-muted mb-0">Total Feedback</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h2 class="text-success mb-1">${data.summary.sentiment_distribution?.positive || 0}</h2>
+                                    <p class="text-muted mb-0">Positif</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h2 class="text-warning mb-1">${data.summary.sentiment_distribution?.neutral || 0}</h2>
+                                    <p class="text-muted mb-0">Netral</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h2 class="text-danger mb-1">${data.summary.sentiment_distribution?.negative || 0}</h2>
+                                    <p class="text-muted mb-0">Negatif</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 bg-gradient-purple text-white mt-3">
+                        <div class="card-body text-center">
+                            <h5 class="mb-2">Mean Reciprocal Rank (MRR)</h5>
+                            <h1 class="mb-0">${data.mrr.toFixed(4)}</h1>
+                            <p class="mb-0 opacity-75">Skor evaluasi ranking sentimen</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3">Detail Analisis Sentimen</h6>
+            `;
+            
+            if (data.data && data.data.length > 0) {
+                data.data.forEach((item, index) => {
+                    const sentimentClass = `sentiment-${item.sentiment}`;
+                    let sentimentText = '';
+                    
+                    switch(item.sentiment) {
+                        case 'positive':
+                            sentimentText = 'Positif';
+                            break;
+                        case 'negative':
+                            sentimentText = 'Negatif';
+                            break;
+                        case 'neutral':
+                            sentimentText = 'Netral';
+                            break;
+                        case 'no_review':
+                            sentimentText = 'Tidak Ada Review';
+                            break;
+                        default:
+                            sentimentText = item.sentiment;
+                    }
+                    
+                    html += `
+                        <div class="sentiment-result-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="initials-avatar small">
+                                            ${getInitials(item.user_name)}
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium small">${item.user_name || 'N/A'}</div>
+                                            <small class="text-muted">FDB${item.feedback_id.toString().padStart(4, '0')}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="review-text small" title="${item.original_review || ''}">
+                                        ${item.original_review ? (item.original_review.length > 100 ? item.original_review.substring(0, 100) + '...' : item.original_review) : 'Tidak ada review'}
+                                    </div>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <span class="badge bg-warning bg-opacity-10 text-dark">${item.rating}/5</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="sentiment-badge ${sentimentClass}">
+                                        ${sentimentText}
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    ${renderProbabilityBars(item.probability)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Pagination
+                if (data.pagination && data.pagination.total_pages > 1) {
+                    html += `
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav>
+                                <ul class="pagination">
+                                    ${data.pagination.current_page > 1 ? 
+                                        `<li class="page-item">
+                                            <button class="page-link" onclick="showSentimentResults(${data.pagination.current_page - 1})">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                        </li>` : ''
+                                    }
+                                    
+                                    ${Array.from({length: Math.min(5, data.pagination.total_pages)}, (_, i) => {
+                                        const pageNum = i + 1;
+                                        return `
+                                            <li class="page-item ${pageNum === data.pagination.current_page ? 'active' : ''}">
+                                                <button class="page-link" onclick="showSentimentResults(${pageNum})">
+                                                    ${pageNum}
+                                                </button>
+                                            </li>
+                                        `;
+                                    }).join('')}
+                                    
+                                    ${data.pagination.current_page < data.pagination.total_pages ? 
+                                        `<li class="page-item">
+                                            <button class="page-link" onclick="showSentimentResults(${data.pagination.current_page + 1})">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </li>` : ''
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    `;
+                }
+            } else {
+                html += `
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-chart-line fa-3x mb-3 opacity-50"></i>
+                        <p>Tidak ada data hasil analisis tersedia.</p>
+                        <button class="btn btn-purple mt-2" onclick="runSentimentAnalysis()">
+                            <i class="fas fa-play me-1"></i>Jalankan Analisis
+                        </button>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render probability bars
+        function renderProbabilityBars(probability) {
+            let bars = '';
+            const colors = {
+                positive: 'success',
+                negative: 'danger',
+                neutral: 'warning'
+            };
+            
+            for (const [sentiment, value] of Object.entries(probability)) {
+                if (sentiment !== 'unknown' && sentiment !== 'no_review') {
+                    const percentage = (value * 100).toFixed(1);
+                    const sentimentText = sentiment.charAt(0).toUpperCase() + sentiment.slice(1);
+                    
+                    bars += `
+                        <div class="progress-container">
+                            <span class="progress-label">${sentimentText}</span>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill bg-${colors[sentiment]}" 
+                                     style="width: ${percentage}%"></div>
+                            </div>
+                            <span class="probability-value">${percentage}%</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            return `<div class="probability-bars">${bars}</div>`;
+        }
+
+        // Load sentiment data for each feedback
+        async function loadSentimentData() {
+            try {
+                const response = await fetch('/admin/feedback/sentiment-results?page=1', {
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    // Update sentiment badges in table
+                    data.data.forEach(item => {
+                        const badge = document.getElementById(`sentiment-${item.feedback_id}`);
+                        if (badge) {
+                            badge.className = `sentiment-badge sentiment-${item.sentiment}`;
+                            
+                            let sentimentText = '';
+                            switch(item.sentiment) {
+                                case 'positive':
+                                    sentimentText = 'Positif';
+                                    break;
+                                case 'negative':
+                                    sentimentText = 'Negatif';
+                                    break;
+                                case 'neutral':
+                                    sentimentText = 'Netral';
+                                    break;
+                                case 'no_review':
+                                    sentimentText = 'Tidak Ada Review';
+                                    break;
+                                default:
+                                    sentimentText = item.sentiment;
+                            }
+                            badge.textContent = sentimentText;
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading sentiment data:', error);
+            }
+        }
+
+        // Load sentiment data on page load
         document.addEventListener('DOMContentLoaded', function() {
             makeTableResponsive();
             window.addEventListener('resize', makeTableResponsive);
+            
+            @if($hasAnalysis)
+                loadSentimentData();
+            @endif
         });
     </script>
 @endpush

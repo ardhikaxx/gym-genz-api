@@ -52,6 +52,14 @@ Route::middleware(['auth:admin'])->group(function () {
     // Feedback Pengguna
     Route::get('/admin/feedback-pengguna', [FeedbackPenggunaController::class, 'index'])->name('feedback-pengguna.index');
     Route::get('/admin/feedback-pengguna/{id}', [FeedbackPenggunaController::class, 'show'])->name('feedback-pengguna.show');
+    Route::post('/admin/feedback/analyze-sentiment', [FeedbackPenggunaController::class, 'analyzeSentiment'])
+        ->name('feedback.analyze-sentiment');
+    
+    Route::get('/admin/feedback/sentiment-results', [FeedbackPenggunaController::class, 'getSentimentResults'])
+        ->name('feedback.sentiment-results');
+    
+    Route::get('/admin/feedback/sentiment-stats', [FeedbackPenggunaController::class, 'getSentimentStats'])
+        ->name('feedback.sentiment-stats');
 
     // Manajemen Admin
     Route::get('/admin/manajemen-admin', [ManajemenAdminController::class, 'index'])->name('manajemen-admin.index');
