@@ -1,6 +1,11 @@
 <!-- Sidebar -->
 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
     <div class="position-sticky pt-3">
+        <!-- Close button for mobile -->
+        <div class="d-flex justify-content-end d-md-none p-3">
+            <button class="btn btn-close btn-close-white" id="sidebarClose" aria-label="Close sidebar"></button>
+        </div>
+        
         <div class="sidebar-brand text-center py-4">
             <div class="logo-container mx-auto mb-3">
                 <i class="fas fa-dumbbell"></i>

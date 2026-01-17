@@ -1,23 +1,18 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container-fluid">
         <!-- Toggle sidebar button -->
-        <button class="navbar-toggler me-2" type="button" id="sidebarToggle">
+        <button class="navbar-toggler me-2 sidebar-toggler" type="button" id="sidebarToggle" aria-label="Toggle sidebar">
             <i class="fas fa-bars"></i>
         </button>
-        
-        <!-- Brand -->
-        <a class="navbar-brand d-lg-none" href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-dumbbell me-2"></i>Gym GenZ
-        </a>
-        
+
         <!-- User Dropdown -->
         <div class="dropdown ms-auto">
-            <button class="btn dropdown-toggle d-flex align-items-center" type="button" 
-                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="user-avatar me-2">
-                    @if(Auth::guard('admin')->user()->foto_profile)
-                        <img src="{{ asset('admins/' . Auth::guard('admin')->user()->foto_profile) }}" 
-                             alt="Profile" class="rounded-circle" style="width: 32px; height: 32px;">
+                    @if (Auth::guard('admin')->user()->foto_profile)
+                        <img src="{{ asset('admins/' . Auth::guard('admin')->user()->foto_profile) }}" alt="Profile"
+                            class="rounded-circle" style="width: 32px; height: 32px;">
                     @else
                         <i class="fas fa-user-circle"></i>
                     @endif
@@ -28,8 +23,11 @@
                 </div>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user me-2"></i>Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i
+                            class="fas fa-user me-2"></i>Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
