@@ -39,5 +39,7 @@ Route::middleware('auth.token')->group(function () {
 
     // Feedback routes
     Route::post('/feedback', [FeedBackController::class, 'store']);
+    Route::post('/feedback/update', [FeedBackController::class, 'update']);
+    Route::delete('/feedback', [FeedBackController::class, 'destroy']);
     Route::get('/feedback/my', [FeedBackController::class, 'myFeedback']);
 });
