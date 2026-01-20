@@ -27,10 +27,9 @@ logger = logging.getLogger(__name__)
 
 try:
     from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.svm import SVC 
-    from sklearn.model_selection import train_test_split, GridSearchCV
+    from sklearn.svm import SVC
+    from sklearn.model_selection import train_test_split
     from sklearn.metrics import classification_report, accuracy_score
-    from sklearn.calibration import CalibratedClassifierCV
     import joblib
     import nltk
     from nltk.tokenize import word_tokenize
@@ -77,7 +76,7 @@ else:
 
 class SentimentAnalyzer:
     def __init__(self):
-        logger.info("Initializing SentimentAnalyzer dengan SVM...")
+        logger.info("Initializing SentimentAnalyzer...")
         self.db_config = {
             'host': os.getenv('DB_HOST', '127.0.0.1'),
             'port': os.getenv('DB_PORT', '3306'),
@@ -105,11 +104,9 @@ class SentimentAnalyzer:
             logger.error(f"Error loading stopwords: {e}")
             self.stop_words = set(['yang', 'dan', 'di', 'dari', 'ke', 'pada', 'untuk', 'dengan', 'ini', 'itu', 'saya', 'kamu'])
         
-        # Model dan vectorizer
+        # Model dan vectorizer - MENGUBAH DARI LOGISTIC REGRESSION KE SVM
         self.vectorizer = TfidfVectorizer(max_features=1000, ngram_range=(1, 2))
-        base_svm = SVC(kernel='linear', random_state=42, probability=True)
-        self.model = CalibratedClassifierCV(base_svm, cv=3)
-        self.model = SVC(kernel='linear', random_state=42, probability=True)
+        self.model = SVC(kernel='linear', probability=True, random_state=42)  # Menggunakan SVM dengan kernel linear
         
         # Model path
         self.model_dir = os.path.join(os.getcwd(), 'models')
@@ -119,7 +116,6 @@ class SentimentAnalyzer:
         self.model_path = os.path.join(self.model_dir, 'sentiment_model.pkl')
         
         logger.info(f"Model directory: {self.model_dir}")
-        logger.info("Model SVM dengan kernel linear dan probabilitas diinisialisasi")
     
     def connect_to_database(self):
         """Koneksi ke database MySQL"""
@@ -230,6 +226,7 @@ class SentimentAnalyzer:
     
     def prepare_training_data(self, df):
         """Persiapkan data training"""
+        # Label sentimen berdasarkan rating
         df['sentiment_label'] = df['rating'].apply(self.label_sentiment_by_rating)
         
         # Preprocessing teks
@@ -237,37 +234,6 @@ class SentimentAnalyzer:
         df['cleaned_review'] = df['review'].apply(self.preprocess_text)
         
         return df
-    
-    def optimize_svm_parameters(self, X, y):
-        logger.info("Optimasi hyperparameter SVM...")
-        try:
-            param_grid = {
-                'C': [0.1, 1, 10, 100],
-                'kernel': ['linear', 'rbf'],
-                'gamma': ['scale', 'auto', 0.1, 1]
-            }
-            
-            # Grid search dengan cross-validation
-            grid_search = GridSearchCV(
-                SVC(random_state=42, probability=True),
-                param_grid,
-                cv=3,
-                scoring='accuracy',
-                n_jobs=-1,
-                verbose=1
-            )
-            
-            grid_search.fit(X, y)
-            
-            logger.info(f"Best parameters: {grid_search.best_params_}")
-            logger.info(f"Best cross-validation score: {grid_search.best_score_:.4f}")
-            
-            return grid_search.best_estimator_
-            
-        except Exception as e:
-            logger.error(f"Error dalam optimasi SVM: {e}")
-            logger.info("Menggunakan parameter default")
-            return SVC(kernel='linear', C=1.0, random_state=42, probability=True)
     
     def train_model(self, df):
         """Train model sentiment analysis dengan SVM"""
@@ -278,6 +244,8 @@ class SentimentAnalyzer:
         try:
             # Persiapkan data training
             df = self.prepare_training_data(df)
+            
+            # Filter hanya positive dan negative untuk training
             df_train = df[df['sentiment_label'].isin(['positive', 'negative'])]
             
             if len(df_train) < 2:
@@ -291,20 +259,17 @@ class SentimentAnalyzer:
             y = df_train['sentiment_label']
             
             # Split data jika cukup data
-            if len(df_train) >= 10:
+            if len(df_train) >= 4:
                 X_train, X_test, y_train, y_test = train_test_split(
                     X, y, test_size=0.2, random_state=42, stratify=y
                 )
-                
-                if len(df_train) >= 30:
-                    logger.info("Data cukup untuk optimasi parameter")
-                    self.model = self.optimize_svm_parameters(X_train, y_train)
-                else:
-                    self.model.fit(X_train, y_train)
             else:
                 X_train, y_train = X, y
                 X_test, y_test = X, y
-                self.model.fit(X_train, y_train)
+            
+            # Train model SVM
+            logger.info("Melatih model SVM...")
+            self.model.fit(X_train, y_train)
             
             # Evaluate jika ada test data
             if len(X_test) > 0:
@@ -312,19 +277,15 @@ class SentimentAnalyzer:
                 accuracy = accuracy_score(y_test, y_pred)
                 logger.info(f"Model SVM Accuracy: {accuracy:.2%}")
                 
-                # Classification report detail
-                report = classification_report(y_test, y_pred, output_dict=True)
-                logger.info(f"Precision Positive: {report.get('positive', {}).get('precision', 0):.2%}")
-                logger.info(f"Recall Positive: {report.get('positive', {}).get('recall', 0):.2%}")
-                logger.info(f"Precision Negative: {report.get('negative', {}).get('precision', 0):.2%}")
-                logger.info(f"Recall Negative: {report.get('negative', {}).get('recall', 0):.2%}")
+                # Log classification report untuk detail lebih lanjut
+                logger.info("Classification Report SVM:")
+                logger.info(f"\n{classification_report(y_test, y_pred)}")
             
             # Save model
             joblib.dump(self.vectorizer, self.vectorizer_path)
             joblib.dump(self.model, self.model_path)
             
             logger.info(f"Model SVM disimpan di: {self.model_path}")
-            logger.info(f"Vectorizer disimpan di: {self.vectorizer_path}")
             return True
             
         except Exception as e:
@@ -353,7 +314,6 @@ class SentimentAnalyzer:
                     model_loaded = True
         except Exception as e:
             logger.error(f"Error loading/training model SVM: {e}")
-            traceback.print_exc()
             model_loaded = False
         
         # Preprocess data
@@ -369,15 +329,11 @@ class SentimentAnalyzer:
                     # Vectorize dan prediksi menggunakan model SVM
                     X_vec = self.vectorizer.transform([review_text])
                     sentiment = self.model.predict(X_vec)[0]
+                    probability = self.model.predict_proba(X_vec)[0]
                     
                     # Get probabilities
-                    try:
-                        probability = self.model.predict_proba(X_vec)[0]
-                        classes = self.model.classes_
-                        prob_dict = {cls: prob for cls, prob in zip(classes, probability)}
-                    except AttributeError:
-                        # Jika model tidak punya predict_proba
-                        prob_dict = {'positive': 0.5, 'negative': 0.5}
+                    classes = self.model.classes_
+                    prob_dict = {cls: prob for cls, prob in zip(classes, probability)}
                     
                     results.append({
                         'feedback_id': int(row['id']),
@@ -389,10 +345,9 @@ class SentimentAnalyzer:
                         'probability': {
                             'positive': float(prob_dict.get('positive', 0)) if 'positive' in classes else 0,
                             'negative': float(prob_dict.get('negative', 0)) if 'negative' in classes else 0,
-                            'neutral': 0.0  # SVM tidak dilatih dengan netral
+                            'neutral': float(prob_dict.get('neutral', 0)) if 'neutral' in classes else 0
                         },
-                        'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None,
-                        'model_used': 'SVM'
+                        'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None
                     })
                 else:
                     # Gunakan rule-based analysis
@@ -409,12 +364,11 @@ class SentimentAnalyzer:
                             'negative': 0.8 if sentiment == 'negative' else 0.1,
                             'neutral': 0.8 if sentiment == 'neutral' else 0.1
                         },
-                        'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None,
-                        'model_used': 'rule_based'
+                        'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None
                     })
                     
             except Exception as e:
-                logger.error(f"Error analyzing review {row['id']} with SVM: {e}")
+                logger.error(f"Error analyzing review {row['id']}: {e}")
                 # Fallback to rule-based
                 sentiment = self.label_sentiment_by_rating(row['rating'])
                 results.append({
@@ -429,14 +383,13 @@ class SentimentAnalyzer:
                         'negative': 0.8 if sentiment == 'negative' else 0.1,
                         'neutral': 0.8 if sentiment == 'neutral' else 0.1
                     },
-                    'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None,
-                    'model_used': 'rule_based_fallback'
+                    'review_date': row['created_at'].strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(row['created_at']) else None
                 })
         
         return results
     
     def run_analysis(self):
-        """Jalankan analisis sentimen lengkap dengan SVM"""
+        """Jalankan analisis sentimen lengkap"""
         try:
             logger.info("\n" + "="*50)
             logger.info("MEMULAI ANALISIS SENTIMEN DENGAN SVM")
@@ -457,15 +410,14 @@ class SentimentAnalyzer:
                         'without_review': 0,
                         'sentiment_distribution': {},
                         'average_rating': 0,
-                        'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                        'model_type': 'SVM'
+                        'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     },
                     'mrr': 0
                 }
             
             logger.info(f"Menemukan {len(df)} feedback untuk dianalisis.")
             
-            # Analisis sentimen
+            # Analisis sentimen dengan SVM
             sentiment_results = self.analyze_sentiments(df)
             
             # Hitung MRR
@@ -478,30 +430,15 @@ class SentimentAnalyzer:
                 'without_review': len(df[df['review'].isnull() | (df['review'] == '')]),
                 'sentiment_distribution': {},
                 'average_rating': float(df['rating'].mean()) if len(df) > 0 else 0,
-                'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'model_type': 'SVM (Support Vector Machine)',
-                'kernel_type': 'linear',
-                'with_probability': True
+                'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             }
             
             if sentiment_results:
-                sentiments = [r['sentiment'] for r in sentiment_results]
+                sentiments = [r['sentiment'] for r in sentiment_results if r['sentiment'] not in ['no_review', 'unknown']]
                 if sentiments:
                     from collections import Counter
                     sentiment_counts = Counter(sentiments)
                     summary['sentiment_distribution'] = dict(sentiment_counts)
-                    
-                # Hitung akurasi berdasarkan rating (untuk evaluasi)
-                correct = 0
-                total = 0
-                for result in sentiment_results:
-                    rule_based = self.label_sentiment_by_rating(result['rating'])
-                    if result['sentiment'] == rule_based:
-                        correct += 1
-                    total += 1
-                
-                if total > 0:
-                    summary['agreement_with_rating'] = f"{(correct/total)*100:.2f}%"
             
             # Hasil akhir
             result = {
@@ -525,18 +462,17 @@ class SentimentAnalyzer:
             logger.info(f"Feedback negatif: {summary['sentiment_distribution'].get('negative', 0)}")
             logger.info(f"Feedback netral: {summary['sentiment_distribution'].get('neutral', 0)}")
             logger.info(f"MRR Score: {mrr_score:.4f}")
-            logger.info(f"Model yang digunakan: SVM dengan kernel linear")
             logger.info(f"Hasil disimpan di: {output_file}")
             logger.info("="*50)
             
             return result
             
         except Exception as e:
-            logger.error(f"Error dalam analisis dengan SVM: {e}")
+            logger.error(f"Error dalam analisis: {e}")
             traceback.print_exc()
             return {
                 'status': 'error',
-                'message': f'Error dengan SVM: {str(e)}',
+                'message': f'Error: {str(e)}',
                 'data': [],
                 'summary': {},
                 'mrr': 0
@@ -548,12 +484,13 @@ def main():
         analyzer = SentimentAnalyzer()
         result = analyzer.run_analysis()
         
+        # Hanya output JSON untuk Laravel
         print(json.dumps(result, ensure_ascii=False))
         
     except Exception as e:
         error_result = {
             'status': 'error',
-            'message': f'Critical error dengan SVM: {str(e)}',
+            'message': f'Critical error: {str(e)}',
             'data': [],
             'summary': {},
             'mrr': 0
