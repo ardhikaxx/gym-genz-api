@@ -14,6 +14,10 @@ use App\Http\Controllers\Api\FeedBackController;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/camera', function () {
+    return view('camera');
+})->name('camera.view');
+
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

@@ -16,6 +16,10 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/camera', function () {
+    return view('camera');
+})->name('camera.view');
+
 // Admin Routes
 Route::middleware(['auth:admin'])->group(function () {
     // Dashboard
